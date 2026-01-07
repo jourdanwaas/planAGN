@@ -70,7 +70,7 @@ import re, sys; \
 lines = '\n'.join([line for line in sys.stdin]); \
 matches = re.findall(r'\n## (.*)\n[\s\S]+?\n([a-zA-Z_-]+):', lines); \
 print('Available rules:\n'); \
-print('\n'.join(['{:25}{}'.format(*reversed(match)) for match in matches]))
+print('\n'.join('{:25}{}'.format(*reversed(match)) for match in matches))
 endef
 export PRINT_HELP_PYSCRIPT
 
