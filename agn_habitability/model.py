@@ -300,56 +300,44 @@ def mass_lost_momentum(x_pc: float) -> np.ndarray:
 # plot ozone depletion
 
 def plot_ozone_depletion():
+    # energy-driven (index 0)
+    plot_driven_ozone_depletion(driver_index=0, legend_title='Energy-Driven')
+    # momentum-driven (index 1)
+    plot_driven_ozone_depletion(driver_index=1, legend_title='Momentum-Driven')
+
+def plot_driven_ozone_depletion(driver_index, legend_title):
     x_list = [100., 800., 5000., 10000., 15000.]
     # energy-driven (index 0)
     fig, ax = plt.subplots(figsize=(7, 5))
     for i, x_pc in enumerate(x_list):
-        plt.plot(bh_m_plot, Oz_dep(x_pc, 0) * 100.0, colors[i], linestyle='-',
-                 label=f'R:{x_pc/100:.0f} kpc')
+        plt.plot(bh_m_plot, Oz_dep(x_pc, driver_index) * 100.0, colors[i],
+                 linestyle='-', label=f'R:{x_pc/100:.0f} kpc')
     plt.xlabel(r'Black Hole Mass [$M_{\odot}$]', fontsize=14)
     plt.ylabel('Ozone depletion D [%]', fontsize=14)
     plt.xscale('log')
-    plt.legend(title='Energy-Driven', prop={'size': 10})
+    plt.legend(title=legend_title, prop={'size': 10})
     plt.tight_layout()
-    fig.savefig('plots/ozone depl ed.png')
-
-    # momentum-driven (index 1)
-    fig, ax = plt.subplots(figsize=(7, 5))
-    for i, x_pc in enumerate(x_list):
-        plt.plot(bh_m_plot, Oz_dep(x_pc, 1) * 100.0, colors[i], linestyle='-',
-                 label=f'R:{x_pc/100:.0f} kpc')
-    plt.xlabel(r'Black Hole Mass [$M_{\odot}$]', fontsize=14)
-    plt.ylabel('Ozone depletion D [%]', fontsize=14)
-    plt.xscale('log')
-    plt.legend(title='Momentum-Driven', prop={'size': 10})
-    plt.tight_layout()
-    fig.savefig('plots/ozone depl md.png')
+    fig.savefig(f'plots/ozone depl {legend_title}.png')
 
 # plot timescale for 90% depletion
 
 def plot_deltaT_90pct():
+
+    plot_driven_deltaT_90pct(driver_index=0, legend_title='Energy-Driven')
+    plot_driven_deltaT_90pct(driver_index=1, legend_title='Momentum-Driven')
+
+def plot_driven_deltaT_90pct(driver_index, legend_title):
     x_list = [100., 800., 5000., 10000., 15000.]
     fig, ax = plt.subplots(figsize=(7, 5))
     for i, x_pc in enumerate(x_list):
-        plt.plot(bh_m_plot, deltaT(x_pc, 0), colors[i], linestyle='-', label=f'R:{x_pc/100:.0f} kpc')
+        plt.plot(bh_m_plot, deltaT(x_pc, driver_index), colors[i], linestyle='-', label=f'R:{x_pc/100:.0f} kpc')
     plt.xlabel(r'Black Hole Mass [$M_{\odot}$]', fontsize=14)
     plt.ylabel(r'$\Delta t$ [yr]', fontsize=14)
     plt.xscale('log')
     plt.yscale('log')
-    plt.legend(title='Energy-Driven', prop={'size': 10})
+    plt.legend(title=legend_title, prop={'size': 10})
     plt.tight_layout()
-    fig.savefig('plots/timescale ed.png')
-
-    fig, ax = plt.subplots(figsize=(7, 5))
-    for i, x_pc in enumerate(x_list):
-        plt.plot(bh_m_plot, deltaT(x_pc, 1), colors[i], linestyle='-', label=f'R:{x_pc/100:.0f} kpc')
-    plt.xlabel(r'Black Hole Mass [$M_{\odot}$]', fontsize=14)
-    plt.ylabel(r'$\Delta t$ [yr]', fontsize=14)
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.legend(title='Momentum-Driven', prop={'size': 10})
-    plt.tight_layout()
-    fig.savefig('plots/timescale md.png')
+    fig.savefig(f'plots/timescale {legend_title}.png')
 
 # plot heating and most probable velocities
 
