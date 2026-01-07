@@ -216,19 +216,12 @@ def deltaT(x_pc: float, outflow_type_index: int) -> np.ndarray:
     """
     time (years) required for 90% ozone depletion, as a function of BH mass.
     """
-    n = len(stored_vals)
-    time_dep = np.zeros(n)
-    power = np.zeros(n)
-    flux = np.zeros(n)
+    power_scale = 0.05 if outflow_type_index == 0 else 0.001
+    power = power_scale * Ledd_arr
+    flux = power / (16 * np.pi * (x_pc * 3.086e18)**2) * (1e7 / (3.17e-8))
 
-    for w in range(n):
-        if outflow_type_index == 0:
-            power[w] = 0.05 * Ledd_list[w]
-        else:
-            power[w] = 0.001 * Ledd_list[w]
-        flux[w] = power[w] / (16.0 * np.pi * (x_pc * 3.086e18)**2) * (1e7 / (3.17e-8))
-
-        time_dep[w] = 1739.0 / (k * flux[w]) #generalized time interval for D = 0.9 or 90% ozone depletion [yr] (equation 25, Waas et al. 2025)
+    # generalized time interval for D = 0.9 or 90% ozone depletion [yr] (equation 25, Waas et al. 2025)
+    time_dep = 1739 / (k * flux)
 
     return time_dep
 
