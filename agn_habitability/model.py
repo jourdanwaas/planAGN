@@ -123,11 +123,20 @@ for n, sv in enumerate(stored_vals):
     r_sch = 2.0 * G * M_kg / c**2  # Schwarzschild radius
     r_sch_list.append(r_sch)
 
-    t_salp = (M_kg * eta * c**2) / ((1.0 - eta) * Ledd) # Salpeter timescale, Equation 2 (Waas et al. 2025)
+    # Salpeter timescale, Equation 2 (Waas et al. 2025)
+    t_salp = (M_kg * eta * c**2) / ((1.0 - eta) * Ledd)
     t_salp_list.append(t_salp)
     t_salp_yr_list.append(t_salp / yr_in_secs)
 
     bh_m_plot.append(bhm)
+
+# numpy array versions of previous lists (for "vectorized" computations)
+
+M_arr = np.array(M_list)                    # SMBH mass in kg
+Ledd_arr = np.array(Ledd_list)              # Eddington luminosity [W]
+r_sch_arr = np.array(r_sch_list)            # Schwarzschild radius [m]
+t_salp_arr = np.array(t_salp_list)          # Salpeter times [s]
+t_salp_yr_arr = np.array(t_salp_yr_list)    # Salpeter times [yr]
 
 # ---------------------------
 # typical UFOs and warm absorbers speeds
@@ -158,40 +167,41 @@ def Oz_dep(x_pc: float, outflow_type_index: int) -> np.ndarray:
     returns:
         y (np.ndarray): ozone depletion fraction array (same length as stored_vals)
     """
-    n = len(stored_vals)
-    y = np.zeros(n)
-    power = np.zeros(n)
-    flux = np.zeros(n)
-    cdisc = np.zeros(n)
-    y1 = np.zeros(n)
-    d_x = np.zeros(n)
-    F_d = np.zeros(n)
+ # assign power fraction depending on outflow type
+    if outflow_type_index == 0:
+        power_frac = 0.05 #energy-driven case (equation 4, Waas et al. 2025)
+    else:
+        power_frac = 0.001 #momentum-driven case (equation 5, Waas et al. 2025)
 
     # x is passed in parsecs; convert to meters where necessary
+
+    power = power_frac * Ledd_arr
+
+    # energy flux attributed to AGN wind particles [erg cm^-2 yr^-1] (equation 30, Ambrifi et al. 2022)
+    # the extra numerical factors are converting x_pc to cm and the (1e7 / 3.17e-8) converts to erg/yr
+    flux = power / (16.0 * np.pi * (x_pc * 3.086e18)**2) * (1e7 / (3.17e-8))
+
+    # cdisc is the constant term (c in quadratic formula) given by equation 27, Ambrifi et al. 2022)
+    cdisc = - (R0 * flux / phi0) * ((10 + y0) * t_salp_yr_arr * 1e9 / sigmastrat)
+
+    n = len(stored_vals)
+    y1 = np.zeros(n)
     for w in range(n):
-        # assign power fraction depending on outflow type
-        if outflow_type_index == 0:
-            power[w] = 0.05 * Ledd_list[w] #energy-driven case (equation 4, Waas et al. 2025)
-        else:
-            power[w] = 0.001 * Ledd_list[w] #momentum-driven case (equation 5, Waas et al. 2025)
-
-        # energy flux attributed to AGN wind particles [erg cm^-2 yr^-1] (equation 30, Ambrifi et al. 2022)
-        # the extra numerical factors are converting x_pc to cm and the (1e7 / 3.17e-8) converts to erg/yr
-        flux[w] = power[w] / (16.0 * np.pi * (x_pc * 3.086e18)**2) * (1e7 / (3.17e-8))
-
-        # cdisc is the constant term (c in quadratic formula) given by equation 27, Ambrifi et al. 2022)
-        cdisc[w] = - (R0 * flux[w] / phi0) * ((10.0 + y0) * (t_salp_yr_list[w] * 1e9) / sigmastrat) #
-
         # solve discriminant using the quadratic formula
-        disc = b**2 - (4.0 * a * cdisc[w])
+        disc = b**2 - (4 * a * cdisc[w])
         # Numerical safeguard: ensure discriminant non-negative (set negative to 0)
         if disc < 0:
             disc = 0.0
-        y1[w] = (-b + np.sqrt(disc)) / (2.0 * a)
+        y1[w] = (-b + np.sqrt(disc)) / (2 * a)
 
-        d_x[w] = (y0 + y1[w]) / y0 #ratio of perturbed and unperturbed NO abundances (equation 29, Ambrifi et al. 2022)
-        F_d[w] = (np.sqrt(16.0 + 9.0 * d_x[w]**2) - 3.0 * d_x[w]) / 2.0 #ratio of stratospheric ozone abundance (equation 28, Ambrifi et al. 2022)
-        y[w] = 1.0 - F_d[w] #fractional ozone depletion (D) (equation 23, Waas et al. 2025)
+    # ratio of perturbed and unperturbed NO abundances (equation 29, Ambrifi et al. 2022)
+    d_x = (y0 + y1) / y0
+
+    # ratio of stratospheric ozone abundance (equation 28, Ambrifi et al. 2022)
+    F_d = (np.sqrt(16 + 9 * d_x**2) - 3 * d_x) / 2
+
+    # fractional ozone depletion (D) (equation 23, Waas et al. 2025)
+    y = 1 - F_d
 
     return y
 
