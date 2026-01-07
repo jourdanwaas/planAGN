@@ -68,11 +68,7 @@ vel = np.linspace(0.01 * c, 0.1 * c, num=10)  # typical UFO speeds range
 def make_parameter_matrix(bhm: np.ndarray, eta: np.ndarray, vels: np.ndarray):
     """return a nested-list structure containing [bhm, eta, vel] triples.
     """
-    n_b = len(bhm)
-    n_e = len(eta)
-    n_v = len(vels)
-    return [[[[bhm[i], eta[j], vels[k]] for i in range(n_b)]
-             for j in range(n_e)] for k in range(n_v)]
+    return [[[[b, e, v] for b in bhm] for e in eta] for v in vels]
 
 
 data_matrix = make_parameter_matrix(bhm_grid, Eta, vel)
