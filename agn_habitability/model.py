@@ -241,15 +241,18 @@ def Tnew(x_pc: float, composition_index: int, kinpow_index: int) -> np.ndarray:
     returns:
         y: array of Delta T [K] for each SMBH mass in stored_vals
     """
-    kinpow = [0.05, 0.001]  # fraction of Ledd converted to wind kinetic power
-    n = len(stored_vals)
-    y = np.zeros(n)
+    # fraction of Ledd converted to wind kinetic power
+    if kinpow_index == 0:
+        kinpow = 0.05
+    elif kinpow_index == 1:
+        kinpow = 0.001
 
-    for w in range(n):
-        # upper bound of atmospheric temperature increase [K] (equation 16, Ambrifi et al. 2022)
-        y[w] = (1.0 / (4.0 * ma_earth * Cp[composition_index])) * \
-               (kinpow[kinpow_index] * Ledd_list[w] * t_salp_list[w]) * \
-               (Rp[0] / (x_pc * pc_to_m))**2.0
+    specific_heat = Cp[composition_index]
+
+    # upper bound of atmospheric temperature increase [K] (equation 16, Ambrifi et al. 2022)
+    y = ((1 / (4 * ma_earth * specific_heat)) *
+        (kinpow * Ledd_arr * t_salp_arr) *
+        (Rp[0] / (x_pc * pc_to_m))**2)
     return y
 
 # ---------------------------
