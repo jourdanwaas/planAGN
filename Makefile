@@ -24,14 +24,11 @@ clean:
 	find . -type d -name "__pycache__" -delete
 
 
-## Lint using ruff (use `make format` to do formatting)
-.PHONY: lint
+## Lint and/or format using ruff (use `make format` to do formatting)
+.PHONY: lint format
 lint:
 	ruff format --check
 	ruff check
-
-## Format source code with ruff
-.PHONY: format
 format:
 	ruff check --fix
 	ruff format
@@ -67,7 +64,7 @@ create_environment:
 
 define PRINT_HELP_PYSCRIPT
 import re, sys; \
-lines = '\n'.join([line for line in sys.stdin]); \
+lines = '\n'.join(line for line in sys.stdin); \
 matches = re.findall(r'\n## (.*)\n[\s\S]+?\n([a-zA-Z_-]+):', lines); \
 print('Available rules:\n'); \
 print('\n'.join('{:25}{}'.format(*reversed(match)) for match in matches))
