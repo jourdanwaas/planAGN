@@ -280,12 +280,10 @@ def mass_lost_energy(x_pc: float) -> np.ndarray:
     """
     mass lost from an atmosphere due to energy-driven outflow interaction.
     """
-    n = len(stored_vals)
-    M_lostE = np.zeros(n)
-    for i in range(n):
-        m = (3.0 / (16.0 * np.pi * G * rho_earth_like)) * \
-            (0.05 * Ledd_list[i] * t_salp_list[i] / (x_pc * pc_to_m)**2) #atmospheric mass loss [kg] with power replaced by energy-driven power equation (equation 20, Ambrifi et al. 2022)
-        M_lostE[i] = m
+
+    # atmospheric mass loss [kg] with power replaced by energy-driven power equation (equation 20, Ambrifi et al. 2022)
+    M_lostE = ((3 / (16 * np.pi * G * rho_earth_like)) *
+        (0.05 * Ledd_arr * t_salp_arr / (x_pc * pc_to_m)**2))
     return M_lostE
 
 
@@ -293,12 +291,10 @@ def mass_lost_momentum(x_pc: float) -> np.ndarray:
     """
     mass lost from an atmosphere due to momentum-driven outflow.
     """
-    n = len(stored_vals)
-    M_lostM = np.zeros(n)
-    for i in range(n):
-        m = (3.0 / (8.0 * np.pi * G * rho_earth_like)) * \
-            (0.001 * Ledd_list[i] * t_salp_list[i] / (x_pc * pc_to_m)**2) #atmospheric mass loss [kg] with power replaced by momentum-driven power equation (equation 20, Ambrifi et al. 2022)
-        M_lostM[i] = m
+    # atmospheric mass loss [kg] with power replaced by momentum-driven power equation (equation 20, Ambrifi et al. 2022)
+
+    M_lostM = ((3 / (8 * np.pi * G * rho_earth_like)) *
+        (0.001 * Ledd_arr * t_salp_arr / (x_pc * pc_to_m)**2))
     return M_lostM
 
 # plot ozone depletion
