@@ -15,8 +15,6 @@ PYTHON_INTERPRETER = python
 .PHONY: requirements
 requirements:
 	uv sync
-	
-
 
 
 ## Delete all compiled Python files
@@ -39,7 +37,6 @@ format:
 	ruff format
 
 
-
 ## Run tests
 .PHONY: test
 test:
@@ -53,7 +50,6 @@ create_environment:
 	@echo ">>> New uv virtual environment created. Activate with:"
 	@echo ">>> Windows: .\\\\.venv\\\\Scripts\\\\activate"
 	@echo ">>> Unix/macOS: source ./.venv/bin/activate"
-	
 
 
 
