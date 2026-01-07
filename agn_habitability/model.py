@@ -398,30 +398,22 @@ def plot_driven_most_probable_velocities(driver_index, legend_title):
 # plot mass loss
 
 def plot_mass_loss():
+    plot_driven_mass_loss(driver=mass_lost_energy, legend_title='Energy-Driven')
+    plot_driven_mass_loss(driver=mass_lost_momentum, legend_title='Momentum-Driven')
+
+def plot_driven_mass_loss(driver, legend_title):
     x_list = [100., 800., 5000., 10000., 15000.]
     fig, ax = plt.subplots(figsize=(7, 5))
     for n, x_pc in enumerate(x_list):
-        plt.plot(bh_m_plot, mass_lost_energy(x_pc) / ma_earth, colors[n], linewidth=1.7,
+        plt.plot(bh_m_plot, driver(x_pc) / ma_earth, colors[n], linewidth=1.7,
                  linestyle='-', label=f'R:{x_pc/100:.0f} kpc')
     plt.xlabel(r'Black Hole Mass [$M_{\odot}$]', fontsize=14)
     plt.ylabel(r'$M_{\mathrm{lost}}/M_{\mathrm{atm,\oplus}}$', fontsize=14)
     plt.xscale('log')
     plt.yscale('log')
-    plt.legend(title='Energy-Driven', prop={'size': 9})
+    plt.legend(title=legend_title, prop={'size': 9})
     plt.tight_layout()
-    fig.savefig('plots/mass loss ed.png')
-
-    fig, ax = plt.subplots(figsize=(7, 5))
-    for n, x_pc in enumerate(x_list):
-        plt.plot(bh_m_plot, mass_lost_momentum(x_pc) / ma_earth, colors[n], linewidth=1.7,
-                 linestyle='-', label=f'R:{x_pc/100:.0f} kpc')
-    plt.xlabel(r'Black Hole Mass [$M_{\odot}$]', fontsize=14)
-    plt.ylabel(r'$M_{\mathrm{lost}}/M_{\mathrm{atm,\oplus}}$', fontsize=14)
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.legend(title='Momentum-Driven', prop={'size': 9})
-    plt.tight_layout()
-    fig.savefig('plots/mass loss md.png')
+    fig.savefig(f'plots/mass loss {legend_title}.png')
 
 # ---------------------------
 # convenience main
