@@ -342,71 +342,58 @@ def plot_driven_deltaT_90pct(driver_index, legend_title):
 # plot heating and most probable velocities
 
 def plot_heating_and_velocities():
-    x_list = [100., 800., 5000., 10000., 15000.]
+    plot_heating()
+    plot_most_probable_velocities()
+
+def plot_heating():
     # energy-driven heating
-    fig, ax = plt.subplots(figsize=(7, 5))
-    for i, x_pc in enumerate(x_list):
-        plt.plot(bh_m_plot, Tnew(x_pc, 0, 0), colors[i], linestyle='-', label=f'R:{x_pc/100:.0f} kpc - $N_2$')
-        plt.plot(bh_m_plot, Tnew(x_pc, 1, 0), colors[i], linewidth=1.7, linestyle='--',
-                 label=f'R:{x_pc/100:.0f} kpc - $H_2$')
-    plt.xlabel(r'Black Hole Mass [$M_{\odot}$]', fontsize=14)
-    plt.ylabel(r'$\Delta T$ [K]', fontsize=14)
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.legend(title='Energy-Driven', prop={'size': 9})
-    plt.tight_layout()
-    fig.savefig('plots/heating ed.png')
+    plot_driven_heating(driver_index=0, legend_title='Energy-Driven')
 
     # momentum-driven heating
+    plot_driven_heating(driver_index=1, legend_title='Momentum-Driven')
+
+def plot_most_probable_velocities():
+    # energy-driven most probable velocities
+    plot_driven_most_probable_velocities(driver_index=0, legend_title='Energy-Driven')
+    # momentum-driven most probable velocities
+    plot_driven_most_probable_velocities(driver_index=1, legend_title='Momentum-Driven')
+
+def plot_driven_heating(driver_index, legend_title):
+    x_list = [100., 800., 5000., 10000., 15000.]
     fig, ax = plt.subplots(figsize=(7, 5))
     for i, x_pc in enumerate(x_list):
-        plt.plot(bh_m_plot, Tnew(x_pc, 0, 1), colors[i], linestyle='-', label=f'R:{x_pc/100:.0f} kpc - $N_2$')
-        plt.plot(bh_m_plot, Tnew(x_pc, 1, 1), colors[i], linewidth=1.7, linestyle='--',
-                 label=f'R:{x_pc/100:.0f} kpc - $H_2$')
+        plt.plot(bh_m_plot, Tnew(x_pc, 0, driver_index), colors[i],
+                 linestyle='-', label=f'R:{x_pc/100:.0f} kpc - $N_2$')
+        plt.plot(bh_m_plot, Tnew(x_pc, 1, driver_index), colors[i], linewidth=1.7,
+                 linestyle='--', label=f'R:{x_pc/100:.0f} kpc - $H_2$')
     plt.xlabel(r'Black Hole Mass [$M_{\odot}$]', fontsize=14)
     plt.ylabel(r'$\Delta T$ [K]', fontsize=14)
     plt.xscale('log')
     plt.yscale('log')
-    plt.legend(title='Momentum-Driven', prop={'size': 9})
+    plt.legend(title=legend_title, prop={'size': 9})
     plt.tight_layout()
-    fig.savefig('plots/heating md.png')
+    fig.savefig(f'plots/heating {legend_title}.png')
 
-    # energy-driven most probable velocities
+def plot_driven_most_probable_velocities(driver_index, legend_title):
+    x_list = [100., 800., 5000., 10000., 15000.]
     fig, ax = plt.subplots(figsize=(7, 5))
     # plot escape velocity (converted to km/s)
     plt.plot(bh_m_plot, v_esc, 'firebrick', linestyle=':', linewidth=3, alpha=0.9,
              label=r'$v_{\text{esc}} = 11.2~\mathrm{km\,s^{-1}}$')
     for i, x_pc in enumerate(x_list):
-        plt.plot(bh_m_plot, Vmp(x_pc, 0, 0) / 1000.0, colors[i], linestyle='-', label=f'R:{x_pc/100:.0f} kpc - $N_2$')
-        plt.plot(bh_m_plot, Vmp(x_pc, 1, 0) / 1000.0, colors[i], linewidth=1.7, linestyle='--',
-                 label=f'R:{x_pc/100:.0f} kpc - $H_2$')
+        plt.plot(bh_m_plot, Vmp(x_pc, 0, driver_index) / 1000.0, colors[i],
+                 linestyle='-', label=f'R:{x_pc/100:.0f} kpc - $N_2$')
+        plt.plot(bh_m_plot, Vmp(x_pc, 1, driver_index) / 1000.0, colors[i], linewidth=1.7,
+                 linestyle='--', label=f'R:{x_pc/100:.0f} kpc - $H_2$')
     plt.xlabel(r'Black Hole Mass [$M_{\odot}$]', fontsize=14)
     plt.ylabel(r'$v_{\mathrm{mp}}$ [km s$^{-1}$]', fontsize=14)
     plt.xscale('log')
     plt.yscale('log')
-    plt.legend(title='Energy-Driven', prop={'size': 9})
+    plt.legend(title=legend_title, prop={'size': 9})
     plt.tight_layout()
-    fig.savefig('plots/prob vel ed.png')
+    fig.savefig(f'plots/prob vel {legend_title}.png')
 
-    # momentum-driven most probable velocities
-    fig, ax = plt.subplots(figsize=(7, 5))
-    # plot escape velocity (converted to km/s)
-    plt.plot(bh_m_plot, v_esc, 'firebrick', linestyle=':', linewidth=3, alpha=0.9,
-         label=r'$v_{\text{esc}} = 11.2~\mathrm{km\,s^{-1}}$')
 
-    for i, x_pc in enumerate(x_list):
-        plt.plot(bh_m_plot, Vmp(x_pc, 0, 1) / 1000.0, colors[i], linestyle='-',
-                 label=f'R:{x_pc/100:.0f} kpc - $N_2$')
-        plt.plot(bh_m_plot, Vmp(x_pc, 1, 1) / 1000.0, colors[i], linewidth=1.7, linestyle='--',
-                 label=f'R:{x_pc/100:.0f} kpc - $H_2$')
-
-    plt.xlabel(r'Black Hole Mass [$M_{\odot}$]', fontsize=14)
-    plt.ylabel(r'$v_{\mathrm{mp}}$ [km s$^{-1}$]', fontsize=14)
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.legend(title='Momentum-Driven', prop={'size': 9})
-    plt.tight_layout()
-    fig.savefig('plots/prob vel md.png')
 
 # plot mass loss
 
