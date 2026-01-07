@@ -263,11 +263,11 @@ def Vmp(x_pc: float, composition_index: int, kinpow_index: int) -> np.ndarray:
     Most probable molecular speed after atmosphere is heated by Delta T.
     Returns speeds in m/s (same units as sqrt).
     """
-    n = len(stored_vals)
-    y = np.zeros(n)
+    m = mpart[composition_index]
+
     deltaT_vals = Tnew(x_pc, composition_index, kinpow_index)
-    for w in range(n):
-        y[w] = np.sqrt((2.0 * kb * (T0 + deltaT_vals[w])) / mpart[composition_index]) # [m s^-1] (equation 17, Ambrifi et al. 2022)
+
+    y = np.sqrt(2 * kb * (T0 + deltaT_vals) / m) # [m s^-1] (equation 17, Ambrifi et al. 2022)
     return y
 
 # escape velocity for "Earth-like" surface used for plotting
