@@ -59,6 +59,11 @@ colors = ['coral', 'deeppink', 'forestgreen', 'dodgerblue', 'darkblue', 'darkorc
 # then go to the reports/figures folder
 plot_dir = Path(__file__).parent.parent.resolve() / 'reports' / 'figures'
 
+# create a .gitignore in that folder
+gitignore_file = plot_dir / ".gitignore"
+if not gitignore_file.exists():
+    gitignore_file.write_text("*\n!.gitignore\n")  # ignore all files except .gitignore itself
+
 ## parameter grids
 
 # SMBH mass range (in M_sun)
