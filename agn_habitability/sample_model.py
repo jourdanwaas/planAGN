@@ -60,7 +60,7 @@ R_cm = np.array(R_kpc)*(3.1*10**21)  #kpc to cm
 M = M_bh * SolarMass          #mass of BH in kg
 Ledd = 3.3e4 * M_bh * SolarLum   #BH Eddington Luminosity (SI)
 eta = 0.1                          #radiative efficiency (adimensional)
-r_sch=2.*G*M/c**2.                 #Sgr A* Schwarzschild Radius (SI)
+r_sch=2.*G*M/c**2.                 #Schwarzschild Radius (SI)
 t_salp = (M*eta*c**2.) / ((1.-eta)*Ledd)  #Salpeter time (SI)
 t_salp_yr = t_salp / yr_in_secs           #Salpeter time (in years)
 
