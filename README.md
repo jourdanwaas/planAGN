@@ -9,46 +9,29 @@ This script computes and plots a set of diagnostics for planetary atmospheres ex
 ## Project Organization
 
 ```
-├── LICENSE            <- Open-source license if one is chosen
+├── LICENSE            <- Open-source license (MIT)
 ├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
 ├── README.md          <- The top-level README for developers using this project.
+├── pyproject.toml     <- Project configuration file with package metadata for
+│                         agn_habitability and configuration for tools like black
+├── uv.lock            <- Lock file specifying dependencies for uv to use
 │
-├── docs               <- A default mkdocs project; see www.mkdocs.org for details
+├── docs/              <- Project documentation using mkdocs; see www.mkdocs.org for details
 │
-├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
+├── notebooks/         <- Jupyter notebooks. Naming convention is a number (for ordering),
 │                         the creator's initials, and a short `-` delimited description, e.g.
 │                         `1.0-jqp-initial-data-exploration`.
 │
-├── pyproject.toml     <- Project configuration file with package metadata for 
-│                         agn_habitability and configuration for tools like black
+├── reports/           <- Generated analysis as HTML, PDF, LaTeX, etc.
+│   └── figures/       <- Generated graphics and figures to be used in reporting
 │
-├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-│
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures        <- Generated graphics and figures to be used in reporting
-│
-├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-│                         generated with `pip freeze > requirements.txt`
-│
-├── setup.cfg          <- Configuration file for flake8
-│
-└── agn_habitability   <- Source code for use in this project.
+└── agn_habitability/  <- Source code for use in this project.
     │
     ├── __init__.py             <- Makes agn_habitability a Python module
     │
     ├── config.py               <- Store useful variables and configuration
     │
-    ├── dataset.py              <- Scripts to download or generate data
+    ├── main.py                 <- Stub for script code
     │
-    ├── features.py             <- Code to create features for modeling
-    │
-    ├── modeling                
-    │   ├── __init__.py 
-    │   ├── predict.py          <- Code to run model inference with trained models          
-    │   └── train.py            <- Code to train models
-    │
-    └── plots.py                <- Code to create visualizations
+    └── model.py                <- Script to create plots for features against black hole mass
 ```
-
---------
-
