@@ -59,8 +59,15 @@ colors = ['coral', 'deeppink', 'forestgreen', 'dodgerblue', 'darkblue', 'darkorc
 # then go to the reports/figures folder
 plot_dir = Path(__file__).parent.parent.resolve() / 'reports' / 'figures'
 
+#create a specific output folder for the natural mass range plots
+mass_dir = plot_dir / "natural mass range"
+
+# make sure it exists
+
+mass_dir.mkdir(parents=True, exist_ok=True)
+
 # create a .gitignore in that folder
-gitignore_file = plot_dir / ".gitignore"
+gitignore_file = mass_dir / ".gitignore"
 if not gitignore_file.exists():
     gitignore_file.write_text("*\n!.gitignore\n")  # ignore all files except .gitignore itself
 
@@ -329,8 +336,8 @@ def plot_driven_ozone_depletion(driver_index, legend_title):
     plt.xscale('log')
     plt.legend(title=legend_title, prop={'size': 10})
     plt.tight_layout()
-    filename = f'ozone depl {legend_title}.png'
-    fig.savefig(plot_dir / filename)
+    filename = f'Ozone Depletion {legend_title}.png'
+    fig.savefig(mass_dir / filename)
 
 # plot timescale for 90% depletion
 
@@ -350,8 +357,8 @@ def plot_driven_deltaT_90pct(driver_index, legend_title):
     plt.yscale('log')
     plt.legend(title=legend_title, prop={'size': 10})
     plt.tight_layout()
-    filename = f'timescale {legend_title}.png'
-    fig.savefig(plot_dir / filename)
+    filename = f'Timescale 90 Percent {legend_title}.png'
+    fig.savefig(mass_dir / filename)
 
 # plot heating and most probable velocities
 
@@ -386,8 +393,8 @@ def plot_driven_heating(driver_index, legend_title):
     plt.yscale('log')
     plt.legend(title=legend_title, prop={'size': 9})
     plt.tight_layout()
-    filename = f'heating {legend_title}.png'
-    fig.savefig(plot_dir / filename)
+    filename = f'Heating {legend_title}.png'
+    fig.savefig(mass_dir / filename)
 
 def plot_driven_most_probable_velocities(driver_index, legend_title):
     x_list = [100., 800., 5000., 10000., 15000.]
@@ -406,8 +413,8 @@ def plot_driven_most_probable_velocities(driver_index, legend_title):
     plt.yscale('log')
     plt.legend(title=legend_title, prop={'size': 9})
     plt.tight_layout()
-    filename = f'prob vel {legend_title}.png'
-    fig.savefig(plot_dir / filename)
+    filename = f'Probable Velocity {legend_title}.png'
+    fig.savefig(mass_dir / filename)
 
 
 
@@ -429,8 +436,8 @@ def plot_driven_mass_loss(driver, legend_title):
     plt.yscale('log')
     plt.legend(title=legend_title, prop={'size': 9})
     plt.tight_layout()
-    filename = f'mass loss {legend_title}.png'
-    fig.savefig(plot_dir / filename)
+    filename = f'Mass Loss {legend_title}.png'
+    fig.savefig(mass_dir / filename)
 
 # ---------------------------
 # convenience main
