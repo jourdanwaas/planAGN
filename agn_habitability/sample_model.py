@@ -35,14 +35,22 @@ if not gitignore_file.exists():
 
 result_dir = Path(__file__).parent.parent.resolve() / 'reports' / 'results'
 
+## create subfolder for results
+
+output_dir = result_dir / name.replace(" ", "_")
+
+## make sure it exists
+
+output_dir.mkdir(parents=True, exist_ok=True)
+
 # create a .gitignore in that folder
-gitignore_file = result_dir / ".gitignore"
+gitignore_file = output_dir / ".gitignore"
 if not gitignore_file.exists():
     gitignore_file.write_text("*\n!.gitignore\n")  # ignore all files except .gitignore itself
 
 ## create full path for output file
 
-output_file = result_dir / f"results__{name.replace(' ', '_')}.txt"
+output_file = output_dir / f"results__{name.replace(' ', '_')}.txt"
 
 ## formatting for the output file for all printed results
 with open(output_file, "w", encoding="utf-8") as f:
