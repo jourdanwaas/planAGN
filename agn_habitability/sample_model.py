@@ -1,7 +1,7 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.axes as ax
 from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
 
 ## user inputs
 
