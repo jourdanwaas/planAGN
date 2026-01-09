@@ -35,7 +35,7 @@ result_dir = Path(__file__).parent.parent.resolve() / 'reports' / 'results'
 output_file = result_dir / f"results__{name.replace(' ', '_')}.txt"
 
 ## formatting for the output file for all printed results
-with open(output_file, "w") as f:
+with open(output_file, "w", encoding="utf-8") as f:
     f.write(f"Galaxy: {name}\n")
     f.write("Black hole mass: " + f"{mantissa:.1f} × 10^{exponent} M_sun\n")
     f.write("="*50 + "\n\n")
