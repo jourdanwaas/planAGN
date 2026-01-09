@@ -134,7 +134,7 @@ plt.xticks(fontsize=16)
 plt.tight_layout()
 plt.legend(prop={'size': 12})
 plt.title(
-    f"{name} " + r"$(%.1f \times 10^{%d}~M_\odot)$" % (mantissa, exponent),
+    r"%s $(%.1f \times 10^{%d}~M_\odot)$" % (name, mantissa, exponent),
     fontsize=20,
     fontweight='bold')
 
@@ -175,7 +175,7 @@ plt.xticks(fontsize=16)
 plt.legend(prop={'size': 12})
 plt.tight_layout()
 plt.title(
-    f"{name} " + r"$(%.1f \times 10^{%d}~M_\odot)$" % (mantissa, exponent),
+    r"%s $(%.1f \times 10^{%d}~M_\odot)$" % (name, mantissa, exponent),
     fontsize=20,
     fontweight='bold')
 
@@ -290,7 +290,7 @@ plt.xlabel('R [kpc] ', fontsize=20, color='k')
 plt.ylabel(r'$M_{\mathrm{lost}}/M_{\mathrm{atm,\oplus}}$', fontsize=18, color='k') #in terrestrial atmospheres
 plt.tight_layout()
 plt.title(
-    f"{name} " + r"$(%.1f \times 10^{%d}~M_\odot)$" % (mantissa, exponent),
+    r"%s $(%.1f \times 10^{%d}~M_\odot)$" % (name, mantissa, exponent),
     fontsize=20,
     fontweight='bold')
 
@@ -457,7 +457,7 @@ ax.set_xscale('log')
 plt.tight_layout()
 plt.legend(prop={'size': 14}, loc='lower left')
 plt.title(
-    f"{name} " + r"$(%.1f \times 10^{%d}~M_\odot)$" % (mantissa, exponent),
+    r"%s $(%.1f \times 10^{%d}~M_\odot)$" % (name, mantissa, exponent),
     fontsize=20,
     fontweight='bold')
 
@@ -506,7 +506,7 @@ plt.xticks(fontsize=16)
 plt.yticks(fontsize=16)
 plt.tight_layout()
 plt.title(
-    f"{name} " + r"$(%.1f \times 10^{%d}~M_\odot)$" % (mantissa, exponent),
+    r"%s $(%.1f \times 10^{%d}~M_\odot)$" % (name, mantissa, exponent),
     fontsize=20,
     fontweight='bold')
 
