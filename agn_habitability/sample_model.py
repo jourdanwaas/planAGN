@@ -18,6 +18,14 @@ exponent = int(exponent)
 
 plot_dir = Path(__file__).parent.parent.resolve() / 'reports' / 'figures'
 
+## create a subfolder for object
+
+object_dir = plot_dir / name.replace(" ", "_")
+
+## check to make sure it exists
+
+object_dir.mkdir(parents=True, exist_ok=True)
+
 ## define path to results directory
 
 result_dir = Path(__file__).parent.parent.resolve() / 'reports' / 'results'
@@ -113,7 +121,7 @@ plt.title(
 
 # define filename and full save path
 filename = f"heating__{name.replace(' ', '_')}.png"
-save_path = plot_dir / filename
+save_path = object_dir / filename
 
 if save_plots:
     fig.savefig(save_path, bbox_inches='tight')
@@ -154,7 +162,7 @@ plt.title(
 
 # define filename and full save path
 filename = f"probvel__{name.replace(' ', '_')}.png"
-save_path = plot_dir / filename
+save_path = object_dir / filename
 
 if save_plots:
     fig.savefig(save_path, bbox_inches='tight')
@@ -269,7 +277,7 @@ plt.title(
 
 # define filename and full save path
 filename = f"massloss__{name.replace(' ', '_')}.png"
-save_path = plot_dir / filename
+save_path = object_dir / filename
 
 if save_plots:
     fig.savefig(save_path, bbox_inches='tight')
@@ -436,7 +444,7 @@ plt.title(
 
 # define filename and full save path
 filename = f"ozonedepl__{name.replace(' ', '_')}.png"
-save_path = plot_dir / filename
+save_path = object_dir / filename
 
 if save_plots:
     fig.savefig(save_path, bbox_inches='tight')
@@ -485,7 +493,7 @@ plt.title(
 
 # define filename and full save path
 filename = f"90percent__{name.replace(' ', '_')}.png"
-save_path = plot_dir / filename
+save_path = object_dir / filename
 
 if save_plots:
     fig.savefig(save_path, bbox_inches='tight')
