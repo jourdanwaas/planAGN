@@ -1,0 +1,6 @@
+#ignore all files and subfolders
+
+*
+!.gitignore
+
+#keep nothing else tracked in this folder
