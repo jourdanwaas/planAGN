@@ -27,11 +27,6 @@ object_dir = plot_dir / name.replace(" ", "_")
 
 object_dir.mkdir(parents=True, exist_ok=True)
 
-# create a .gitignore in that folder
-gitignore_file = object_dir / ".gitignore"
-if not gitignore_file.exists():
-    gitignore_file.write_text("*\n!.gitignore\n")  # ignore all files except .gitignore itself
-
 ## define path to results directory
 
 result_dir = Path(__file__).parent.parent.resolve() / 'reports' / 'results'
@@ -43,11 +38,6 @@ output_dir = result_dir / name.replace(" ", "_")
 ## make sure it exists
 
 output_dir.mkdir(parents=True, exist_ok=True)
-
-# create a .gitignore in that folder
-gitignore_file = output_dir / ".gitignore"
-if not gitignore_file.exists():
-    gitignore_file.write_text("*\n!.gitignore\n")  # ignore all files except .gitignore itself
 
 ## create full path for output file
 

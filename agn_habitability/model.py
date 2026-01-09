@@ -66,11 +66,6 @@ mass_dir = plot_dir / "natural mass range"
 
 mass_dir.mkdir(parents=True, exist_ok=True)
 
-# create a .gitignore in that folder
-gitignore_file = mass_dir / ".gitignore"
-if not gitignore_file.exists():
-    gitignore_file.write_text("*\n!.gitignore\n")  # ignore all files except .gitignore itself
-
 ## parameter grids
 
 # SMBH mass range (in M_sun)
