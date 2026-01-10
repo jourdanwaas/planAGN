@@ -407,9 +407,9 @@ md_x = ((3+y1_md)/3)
 F_ed = (np.sqrt(16+9*ed_x**2) - 3*ed_x)/2
 F_md = (np.sqrt(16+9*md_x**2) - 3*md_x)/2
 
-#fractional ozone depletion
-D_ed = 1 - F_ed
-D_md = 1 - F_md
+#fractional ozone depletion, converted to percent
+D_ed = (1 - F_ed) * 100
+D_md = (1 - F_md) * 100
 #print(D_ed)
 #print(D_md)
 
@@ -439,7 +439,7 @@ ax.plot(R_kpc, D_md, 'dodgerblue', linestyle='-',
 
 yvals = ax.get_yticks()
 #ax.set_yticklabels(["{:,.1%}".format(y) for y in yvals], fontsize=16)
-plt.ylim(0.995, 1.001)
+plt.ylim(99.5, 100.1)
 plt.xlim(10**-1, 1.5*10**2)
 plt.xticks(fontsize=16)
 plt.yticks(fontsize=16)
