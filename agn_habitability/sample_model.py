@@ -445,7 +445,13 @@ def run_model(name, M_bh, save_plots=True):
 
     yvals = ax.get_yticks()
     #ax.set_yticklabels(["{:,.1%}".format(y) for y in yvals], fontsize=16)
-    plt.ylim(99.5, 100.1)
+    
+    # set y-axis limits dynamically based on black hole mass
+    if M_bh > 9.9e8:
+        plt.ylim(99.90, 100.02)
+    else:
+        plt.ylim(99.5, 100.1)
+
     plt.xlim(10**-1, 1.5*10**2)
     plt.xticks(fontsize=16)
     plt.yticks(fontsize=16)
