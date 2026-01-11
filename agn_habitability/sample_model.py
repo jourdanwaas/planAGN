@@ -124,6 +124,7 @@ def run_model(name, M_bh, save_plots=True):
     plt.xscale('log')
     plt.yscale('log')
     plt.ylim(10**-1, 10**10)
+    plt.xlim(10**-1, 1.5*10**2)
     plt.yticks(fontsize=16)
     plt.xticks(fontsize=16)
     plt.tight_layout()
