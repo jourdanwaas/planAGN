@@ -26,12 +26,27 @@ This script computes and plots a set of diagnostics for planetary atmospheres ex
 │   └── figures/       <- Generated graphics and figures to be used in reporting
 │
 └── agn_habitability/  <- Source code for use in this project.
-    │
     ├── __init__.py             <- Makes agn_habitability a Python module
-    │
     ├── config.py               <- Store useful variables and configuration
-    │
     ├── main.py                 <- Stub for script code
-    │
     └── model.py                <- Script to create plots for features against black hole mass
+```
+
+## Getting started
+
+### Setting up the environment
+
+1. Install [uv](https://docs.astral.sh/uv).
+2. Clone the repository to your device.
+3. Open a terminal/shell in the folder where you created the repository clone and run
+   ```sh
+   uv sync
+   ```
+
+### Running the code
+Run either of the following lines to run the corresponding script
+
+```sh
+uv run agn_habitability/model.py
+uv run agn_habitability/sample_model.py
 ```
