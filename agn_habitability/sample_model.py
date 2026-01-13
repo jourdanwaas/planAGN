@@ -1,6 +1,18 @@
 # -*- coding: utf-8 -*-
 from pathlib import Path
 
+from astropy.constants import (
+    G,
+    L_sun,
+    M_earth,
+    M_sun,
+    # R_jup,
+    R_earth,
+    c,
+    k_B,
+    m_p,
+    pc,
+)
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -56,23 +68,15 @@ def run_model(name, M_bh, save_plots=True):
 
     ## constants
 
-    c = 299792458.                     #m/s
-    G = 6.67*10**(-11.)                #International System of Units (SI)
     yr_in_days = 365.256               #sidereal year
     yr_in_secs = yr_in_days * 24. * 60. * 60. #sidereal year in seconds
-    r_pc = 3.09*10**(16.)              #pc to meter conversion
-    kb = 1.38 * 10.**(-23.)            #Boltzmann constant (SI)
-    mp = 1.67 * 10.**(-27.)            #Proton mass (kg)
-    m_Earth=5.973*10**24.              #Earth mass (kg)
-    SolarMass = 1.9985*10.**30.        # (SI)
-    SolarLum = 3.828*10.**26           # in watts
     R_kpc = np.arange(0.1,150)          #distance to bh in kpc where the radius is a range
     R_cm = np.array(R_kpc)*(3.1*10**21)  #kpc to cm
 
     ## BH data
 
-    M = M_bh * SolarMass          #mass of BH in kg
-    Ledd = 3.3e4 * M_bh * SolarLum   #BH Eddington Luminosity (SI)
+    M = M_bh * M_sun                   #mass of BH in kg
+    Ledd = 3.3e4 * M_bh * L_sun        #BH Eddington Luminosity (SI)
     eta = 0.1                          #radiative efficiency (adimensional)
     r_sch=2.*G*M/c**2.                 #Schwarzschild Radius (SI)
     t_salp = (M*eta*c**2.) / ((1.-eta)*Ledd)  #Salpeter time (SI)
@@ -86,14 +90,14 @@ def run_model(name, M_bh, save_plots=True):
     #Planetary and atmospheric parameters
 
     Rp = [6371000. , 69911000.]        #Earth and Jup. radii (SI)
-    rho=5.5*10.**3.                    #Earth density (SI)
-    vfug=np.sqrt(2.*G*m_Earth/Rp[0])   #Escape velocity from the Earth (SI)
+    rho = M_earth / (4/3*np.pi * R_earth**3) #Earth density (SI)
+    vfug=np.sqrt(2*G*M_earth/Rp[0])    #Escape velocity from the Earth (SI)
     ma = 5.1*10.**18.                  #Earth atmospheric mass (SI)
     mm = 2.5*10.**16.                  #Mars atmospheric mass  (SI)
-    m_h2 = 2.02 *1.66*10.**(-27)       #molecular hydrogen mass (SI)
-    m_wat = 18.01 *1.66*10.**(-27)     #water molecule mass (SI)
-    m_o2 = 5.31 * 10**(-26.)           #molecular oxygen mass (SI)
-    m_n2=28.01 * 1.66*10.**(-27)       #molecular nitrogen mass (SI)
+    m_h2 = 2.02 * m_p                  #molecular hydrogen mass (SI)
+    m_wat = 18.01 * m_p                #water molecule mass (SI)
+    m_o2 = 31.998 * m_p                #molecular oxygen mass (SI)
+    m_n2=28.01 * m_p                   #molecular nitrogen mass (SI)
     mpart=[m_n2, m_h2 ]                #list of molecular masses
     T0 = 273.15                        #assumed initial temperature for planetary atmosphere (SI)
     Cp=[1320,18300,4444]               #specific heat at constant pressure for nitrogen, hydrogen, water ( J/ (kg K) )
@@ -110,8 +114,8 @@ def run_model(name, M_bh, save_plots=True):
                                     # and outflow's kinetic power (j=0 : kinetic power = 5%Ledd ; j=1 : kinetic power = 0.1%Ledd).
         #y=np.zeros((len(x)))
         #for w in range(0,len(x)):
-            #y[w]=  (1./(4.*ma*Cp[k]))*(kinpow[j]*Ledd*t_salp)*(Rp[0]/(x[w]*r_pc))**2.
-        y = (1./(4.*ma*Cp[k]))*(kinpow[j]*Ledd*t_salp)*(Rp[0]/(x*r_pc))**2.
+            #y[w]=  (1./(4.*ma*Cp[k]))*(kinpow[j]*Ledd*t_salp)*(Rp[0]/(x[w]*pc))**2.
+        y = 1/(4*ma*Cp[k]) * (kinpow[j]*Ledd*t_salp) * (Rp[0]/(x*pc))**2
         return y
 
     fig = plt.figure(facecolor='white', figsize=(7,5))
@@ -148,8 +152,8 @@ def run_model(name, M_bh, save_plots=True):
                                     # the SMBH (x), atmospheric composition (k) and kinetic power (j).
         #y=np.zeros((len(x)))
         #for w in range(0,len(x)):
-            #y[w]= np.sqrt((2*kb*(T0+Tnew(x,k,j)[w])) /mpart[k])
-        y = np.sqrt((2*kb*(T0+Tnew(x,k,j))) /mpart[k])
+            #y[w]= np.sqrt((2*k_B*(T0+Tnew(x,k,j)[w])) /mpart[k])
+        y = np.sqrt((2*k_B*(T0+Tnew(x,k,j))) /mpart[k])
         return y
 
     fig = plt.figure(facecolor='white', figsize=(7,5))

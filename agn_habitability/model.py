@@ -22,30 +22,25 @@ Requirements:
 
 from pathlib import Path
 
+from astropy.constants import G, M_earth, M_sun, R_earth, c, k_B, m_p, pc
 import matplotlib.pyplot as plt
 import numpy as np
 
 ## define physical constants and standard conversions
 
-c = 299792458.0                  # speed of light [m s^-1]
-G = 6.67e-11                     # gravitational constant [m^3 kg^-1 s^-2]
 yr_in_days = 365.256             # sidereal year [days]
 yr_in_secs = yr_in_days * 24.0 * 3600.0  # seconds in a sidereal year
-pc_to_m = 3.09e16                # parsec to meters
-kb = 1.38e-23                    # Boltzmann constant [J K^-1]
-mp = 1.67e-27                    # proton mass [kg]
-SolarMass = 1.9985e30            # Solar mass in kg
-m_Earth = 5.973e24               # Earth mass in kg
 
 ## planetary and molecular parameters
 
 Rp = [6371000.0, 69911000.0]          # Earth and Jupiter radii [m]
-rho_earth_like = 5.5e3                # Earth density [kg m^-3]
+earth_vol = 4/3*np.pi * R_earth**3    # Earth volume [m^3]
+rho_earth_like = M_earth / earth_vol  #Earth density (SI)
 ma_earth = 5.1e18                     # Earth atmospheric mass [kg]
 mm_mars_atm = 2.5e16                  # Mars atmospheric mass [kg] (unused currently)
-m_h2 = 2.02 * 1.66e-27                # molecular hydrogen mass [kg]
-m_wat = 18.01 * 1.66e-27              # water molecule mass [kg]
-m_n2 = 28.01 * 1.66e-27               # molecular nitrogen mass [kg]
+m_h2 = 2.02 * m_p                     # molecular hydrogen mass [kg]
+m_wat = 18.01 * m_p                   # water molecule mass [kg]
+m_n2 = 28.01 * m_p                    # molecular nitrogen mass [kg]
 mpart = [m_n2, m_h2]                  # list used for computing thermal velocities
 T0 = 273.15                           # base temperature assumption [K]
 Cp = [1320.0, 18300.0, 4444.0]        # specific heats (N2, H2, H2O) [J kg^-1 K^-1]
@@ -131,7 +126,7 @@ for n, sv in enumerate(stored_vals):
     Ledd = bhm * 1.26e31
     Ledd_list.append(Ledd)
 
-    M_kg = bhm * SolarMass
+    M_kg = bhm * M_sun
     M_list.append(M_kg)
 
     r_sch = 2.0 * G * M_kg / c**2  # Schwarzschild radius
@@ -266,7 +261,7 @@ def Tnew(x_pc: float, composition_index: int, kinpow_index: int) -> np.ndarray:
     # upper bound of atmospheric temperature increase [K] (equation 16, Ambrifi et al. 2022)
     y = ((1 / (4 * ma_earth * specific_heat)) *
         (kinpow * Ledd_arr * t_salp_arr) *
-        (Rp[0] / (x_pc * pc_to_m))**2)
+        (Rp[0] / (x_pc * pc))**2)
     return y
 
 # ---------------------------
@@ -281,7 +276,7 @@ def Vmp(x_pc: float, composition_index: int, kinpow_index: int) -> np.ndarray:
 
     deltaT_vals = Tnew(x_pc, composition_index, kinpow_index)
 
-    y = np.sqrt(2 * kb * (T0 + deltaT_vals) / m) # [m s^-1] (equation 17, Ambrifi et al. 2022)
+    y = np.sqrt(2 * k_B * (T0 + deltaT_vals) / m) # [m s^-1] (equation 17, Ambrifi et al. 2022)
     return y
 
 # escape velocity for "Earth-like" surface used for plotting
@@ -297,7 +292,7 @@ def mass_lost_energy(x_pc: float) -> np.ndarray:
 
     # atmospheric mass loss [kg] with power replaced by energy-driven power equation (equation 20, Ambrifi et al. 2022)
     M_lostE = ((3 / (16 * np.pi * G * rho_earth_like)) *
-        (0.05 * Ledd_arr * t_salp_arr / (x_pc * pc_to_m)**2))
+        (0.05 * Ledd_arr * t_salp_arr / (x_pc * pc)**2))
     return M_lostE
 
 
@@ -308,7 +303,7 @@ def mass_lost_momentum(x_pc: float) -> np.ndarray:
     # atmospheric mass loss [kg] with power replaced by momentum-driven power equation (equation 20, Ambrifi et al. 2022)
 
     M_lostM = ((3 / (8 * np.pi * G * rho_earth_like)) *
-        (0.001 * Ledd_arr * t_salp_arr / (x_pc * pc_to_m)**2))
+        (0.001 * Ledd_arr * t_salp_arr / (x_pc * pc)**2))
     return M_lostM
 
 # plot ozone depletion
