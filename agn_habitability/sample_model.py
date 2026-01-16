@@ -1,18 +1,7 @@
 # -*- coding: utf-8 -*-
 from pathlib import Path
 
-from astropy.constants import (
-    G,
-    L_sun,
-    M_earth,
-    M_sun,
-    # R_jup,
-    R_earth,
-    c,
-    k_B,
-    m_p,
-    pc,
-)
+from astropy.constants import G, L_sun, M_earth, M_sun, R_earth, c, k_B, m_p, pc
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -21,7 +10,7 @@ def run_model(name, M_bh, save_plots=True):
     runs the model for a given object
 
     args:
-    
+
     name: name of the object/galaxy
     M_bh: black hole mass in solar masses
     save_plots: whether to save plots to disk
@@ -75,29 +64,29 @@ def run_model(name, M_bh, save_plots=True):
 
     ## BH data
 
-    M = M_bh * M_sun                   #mass of BH in kg
-    Ledd = 3.3e4 * M_bh * L_sun        #BH Eddington Luminosity (SI)
+    M = M_bh * M_sun.to_value('kg')    #mass of BH in kg
+    Ledd = 3.3e4 * M_bh * L_sun.to_value('W')   #BH Eddington Luminosity (SI)
     eta = 0.1                          #radiative efficiency (adimensional)
-    r_sch=2.*G*M/c**2.                 #Schwarzschild Radius (SI)
-    t_salp = (M*eta*c**2.) / ((1.-eta)*Ledd)  #Salpeter time (SI)
+    r_sch=2.*G.to_value()*M/c**2.                #Schwarzschild Radius (SI)
+    t_salp = (M*eta*c.to_value('m/s')**2.) / ((1.-eta)*Ledd)  #Salpeter time (SI)
     t_salp_yr = t_salp / yr_in_secs           #Salpeter time (in years)
 
     #Typical values of UFOs and Warm Absorbers' velocities, Tombesi et al. 2013
 
-    v = 0.1*c                          #UFOs speed (SI)
-    v_out=[10.**5,10.**6.]             #WAs speed (SI)
+    #v = 0.1*c                          #UFOs speed (SI)
+    #v_out=[10.**5,10.**6.]             #WAs speed (SI)
 
     #Planetary and atmospheric parameters
 
     Rp = [6371000. , 69911000.]        #Earth and Jup. radii (SI)
-    rho = M_earth / (4/3*np.pi * R_earth**3) #Earth density (SI)
-    vfug=np.sqrt(2*G*M_earth/Rp[0])    #Escape velocity from the Earth (SI)
+    rho = (M_earth / (4/3*np.pi * R_earth**3)).to_value('kg/m^3') #Earth density (SI)
+    vfug=np.sqrt(2*G.to_value()*M_earth.to_value('kg')/Rp[0])    #Escape velocity from the Earth (SI)
     ma = 5.1*10.**18.                  #Earth atmospheric mass (SI)
-    mm = 2.5*10.**16.                  #Mars atmospheric mass  (SI)
-    m_h2 = 2.02 * m_p                  #molecular hydrogen mass (SI)
-    m_wat = 18.01 * m_p                #water molecule mass (SI)
-    m_o2 = 31.998 * m_p                #molecular oxygen mass (SI)
-    m_n2=28.01 * m_p                   #molecular nitrogen mass (SI)
+    #mm = 2.5*10.**16.                  #Mars atmospheric mass  (SI)
+    m_h2 = 2.02 * m_p.to_value('kg')   #molecular hydrogen mass (SI)
+    #m_wat = 18.01 * m_p.to_value('kg') #water molecule mass (SI)
+    #m_o2 = 31.998 * m_p.to_value('kg') #molecular oxygen mass (SI)
+    m_n2=28.01 * m_p.to_value('kg')    #molecular nitrogen mass (SI)
     mpart=[m_n2, m_h2 ]                #list of molecular masses
     T0 = 273.15                        #assumed initial temperature for planetary atmosphere (SI)
     Cp=[1320,18300,4444]               #specific heat at constant pressure for nitrogen, hydrogen, water ( J/ (kg K) )
@@ -115,7 +104,7 @@ def run_model(name, M_bh, save_plots=True):
         #y=np.zeros((len(x)))
         #for w in range(0,len(x)):
             #y[w]=  (1./(4.*ma*Cp[k]))*(kinpow[j]*Ledd*t_salp)*(Rp[0]/(x[w]*pc))**2.
-        y = 1/(4*ma*Cp[k]) * (kinpow[j]*Ledd*t_salp) * (Rp[0]/(x*pc))**2
+        y = 1/(4*ma*Cp[k]) * (kinpow[j]*Ledd*t_salp) * (Rp[0]/(x*pc.to_value('m')))**2
         return y
 
     fig = plt.figure(facecolor='white', figsize=(7,5))
@@ -153,7 +142,7 @@ def run_model(name, M_bh, save_plots=True):
         #y=np.zeros((len(x)))
         #for w in range(0,len(x)):
             #y[w]= np.sqrt((2*k_B*(T0+Tnew(x,k,j)[w])) /mpart[k])
-        y = np.sqrt((2*k_B*(T0+Tnew(x,k,j))) /mpart[k])
+        y = np.sqrt((2*k_B.to_value('J/K')*(T0+Tnew(x,k,j))) /mpart[k])
         return y
 
     fig = plt.figure(facecolor='white', figsize=(7,5))
@@ -237,12 +226,12 @@ def run_model(name, M_bh, save_plots=True):
 
     M_lostE = np.zeros((len(x)))       #Mass lost in the interaction with the outflow in the energy driven (E) case
     for i in range(0,len(x)):
-        m = (3./(16.*np.pi*G*rho))*(kinpow[0]*Ledd*t_salp/(x[i]*r_pc)**2)
+        m = (3./(16.*np.pi*G.to_value()*rho))*(kinpow[0]*Ledd*t_salp/(x[i]*pc.to_value('m'))**2)
         M_lostE[i]= m
 
     M_lostM = np.zeros((len(x)))     # Mass lost in the interaction with the outflow in the momentum driven (M) case
     for i in range(0,len(x)):
-        m = (3./(8.*np.pi*G*rho))*(kinpow[1]*Ledd*t_salp/(x[i]*r_pc)**2)
+        m = (3./(8.*np.pi*G.to_value()*rho))*(kinpow[1]*Ledd*t_salp/(x[i]*pc.to_value('m'))**2)
         M_lostM[i]= m
 
     fig = plt.figure(facecolor='white', figsize=(7,5))
@@ -341,14 +330,14 @@ def run_model(name, M_bh, save_plots=True):
     sigma_strat = 5*10**23  #in molec cm^-2
 
     # Compute the constant term (c in quadratic formula)
-    c = - (R0 * ed_flux / Phi0) * ((10 + y0) * t_salp_yr * 10**9 / sigma_strat)
+    qc = - (R0 * ed_flux / Phi0) * ((10 + y0) * t_salp_yr * 10**9 / sigma_strat)
 
     # Quadratic coefficients
-    a = 1  # Coefficient of y^2
-    b = 10  # Coefficient of y
+    qa = 1  # Coefficient of y^2
+    qb = 10  # Coefficient of y
 
     # Solve using the quadratic formula
-    discriminant = b**2 - 4*a*c
+    discriminant = qb**2 - 4*qa*qc
 
     """if discriminant >= 0:
         y1_ed = (-b + np.sqrt(discriminant)) / (2*a)
@@ -362,8 +351,8 @@ def run_model(name, M_bh, save_plots=True):
     y2_ed = []
     for disc in discriminant:
         if disc >= 0:
-            y1_ed.append((-b + np.sqrt(disc)) / (2*a))
-            y2_ed.append((-b - np.sqrt(disc)) / (2*a))
+            y1_ed.append((-qb + np.sqrt(disc)) / (2*qa))
+            y2_ed.append((-qb - np.sqrt(disc)) / (2*qa))
         else:
             # Handle cases where discriminant is negative (e.g., append NaN)
             y1_ed.append(np.nan)
@@ -375,14 +364,14 @@ def run_model(name, M_bh, save_plots=True):
 
     #momentum-driven NO concentration (y) in ppb
     # Compute the constant term (c in quadratic formula)
-    c = - (R0 * md_flux / Phi0) * ((10 + y0) * t_salp_yr * 10**9 / sigma_strat)
+    qc = - (R0 * md_flux / Phi0) * ((10 + y0) * t_salp_yr * 10**9 / sigma_strat)
 
     # Quadratic coefficients
-    a = 1  # Coefficient of y^2
-    b = 10  # Coefficient of y
+    qa = 1  # Coefficient of y^2
+    qb = 10  # Coefficient of y
 
     # Solve using the quadratic formula
-    discriminant = b**2 - 4*a*c
+    discriminant = qb**2 - 4*qa*qc
 
     """if discriminant >= 0:
         y1_md = (-b + np.sqrt(discriminant)) / (2*a)
@@ -396,8 +385,8 @@ def run_model(name, M_bh, save_plots=True):
     y2_md = []  # Store solutions for y2_md
     for disc in discriminant:
         if disc >= 0:
-            y1_md.append((-b + np.sqrt(disc)) / (2*a))
-            y2_md.append((-b - np.sqrt(disc)) / (2*a))
+            y1_md.append((-qb + np.sqrt(disc)) / (2*qa))
+            y2_md.append((-qb - np.sqrt(disc)) / (2*qa))
         else:
             # Handle cases where discriminant is negative (e.g., append NaN)
             y1_md.append(np.nan)
@@ -429,7 +418,7 @@ def run_model(name, M_bh, save_plots=True):
     k = (R0/Phi0) * (((10**9)*(10+y0))/sigma_strat)
 
     #define new value for y
-    y = 37     #in ppb
+    #y = 37     #in ppb
 
     time_dep_ed = (1739)/(k*ed_flux)
     time_dep_md = (1739)/(k*md_flux)
@@ -447,9 +436,9 @@ def run_model(name, M_bh, save_plots=True):
     ax.plot(R_kpc, D_md, 'dodgerblue', linestyle='-',
             label=r'$D_{\mathrm{md}}$')     # Ozone depletion, momentum-driven
 
-    yvals = ax.get_yticks()
+    #yvals = ax.get_yticks()
     #ax.set_yticklabels(["{:,.1%}".format(y) for y in yvals], fontsize=16)
-    
+
     # set y-axis limits dynamically based on black hole mass
     if M_bh > 9.9e8:
         plt.ylim(99.90, 100.02)

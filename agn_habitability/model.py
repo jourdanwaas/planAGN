@@ -23,6 +23,7 @@ Requirements:
 from pathlib import Path
 
 from astropy.constants import G, M_earth, M_sun, R_earth, c, k_B, m_p, pc
+from astropy.units import W
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -35,12 +36,12 @@ yr_in_secs = yr_in_days * 24.0 * 3600.0  # seconds in a sidereal year
 
 Rp = [6371000.0, 69911000.0]          # Earth and Jupiter radii [m]
 earth_vol = 4/3*np.pi * R_earth**3    # Earth volume [m^3]
-rho_earth_like = M_earth / earth_vol  #Earth density (SI)
+rho_earth_like = (M_earth / earth_vol).to_value('kg/m^3')  # Earth density (SI)
 ma_earth = 5.1e18                     # Earth atmospheric mass [kg]
 mm_mars_atm = 2.5e16                  # Mars atmospheric mass [kg] (unused currently)
-m_h2 = 2.02 * m_p                     # molecular hydrogen mass [kg]
-m_wat = 18.01 * m_p                   # water molecule mass [kg]
-m_n2 = 28.01 * m_p                    # molecular nitrogen mass [kg]
+m_h2 = 2.02 * m_p.to_value('kg')      # molecular hydrogen mass [kg]
+m_wat = 18.01 * m_p.to_value('kg')    # water molecule mass [kg]
+m_n2 = 28.01 * m_p.to_value('kg')     # molecular nitrogen mass [kg]
 mpart = [m_n2, m_h2]                  # list used for computing thermal velocities
 T0 = 273.15                           # base temperature assumption [K]
 Cp = [1320.0, 18300.0, 4444.0]        # specific heats (N2, H2, H2O) [J kg^-1 K^-1]
@@ -123,19 +124,19 @@ for n, sv in enumerate(stored_vals):
     bhm = sv[0]                   # BH mass in solar masses (M_sun)
     eta = sv[1]                   # radiative efficiency (dimensionless)
     # Eddington luminosity: L_Edd ≈ 1.26e31 W per M_sun
-    Ledd = bhm * 1.26e31
-    Ledd_list.append(Ledd)
+    Ledd = bhm * 1.26e31*W
+    Ledd_list.append(Ledd.to_value('W'))
 
     M_kg = bhm * M_sun
-    M_list.append(M_kg)
+    M_list.append(M_kg.to_value('kg'))
 
     r_sch = 2.0 * G * M_kg / c**2  # Schwarzschild radius
-    r_sch_list.append(r_sch)
+    r_sch_list.append(r_sch.to_value('m'))
 
     # Salpeter timescale, Equation 2 (Waas et al. 2025)
     t_salp = (M_kg * eta * c**2) / ((1.0 - eta) * Ledd)
-    t_salp_list.append(t_salp)
-    t_salp_yr_list.append(t_salp / yr_in_secs)
+    t_salp_list.append(t_salp.to_value('s'))
+    t_salp_yr_list.append(t_salp.to_value('yr'))
 
     bh_m_plot.append(bhm)
 
@@ -261,7 +262,7 @@ def Tnew(x_pc: float, composition_index: int, kinpow_index: int) -> np.ndarray:
     # upper bound of atmospheric temperature increase [K] (equation 16, Ambrifi et al. 2022)
     y = ((1 / (4 * ma_earth * specific_heat)) *
         (kinpow * Ledd_arr * t_salp_arr) *
-        (Rp[0] / (x_pc * pc))**2)
+        (Rp[0] / (x_pc*pc.to_value('m')))**2)
     return y
 
 # ---------------------------
@@ -276,7 +277,7 @@ def Vmp(x_pc: float, composition_index: int, kinpow_index: int) -> np.ndarray:
 
     deltaT_vals = Tnew(x_pc, composition_index, kinpow_index)
 
-    y = np.sqrt(2 * k_B * (T0 + deltaT_vals) / m) # [m s^-1] (equation 17, Ambrifi et al. 2022)
+    y = np.sqrt(2 * k_B.to_value('J/K') * (T0 + deltaT_vals) / m) # [m s^-1] (equation 17, Ambrifi et al. 2022)
     return y
 
 # escape velocity for "Earth-like" surface used for plotting
@@ -292,7 +293,7 @@ def mass_lost_energy(x_pc: float) -> np.ndarray:
 
     # atmospheric mass loss [kg] with power replaced by energy-driven power equation (equation 20, Ambrifi et al. 2022)
     M_lostE = ((3 / (16 * np.pi * G * rho_earth_like)) *
-        (0.05 * Ledd_arr * t_salp_arr / (x_pc * pc)**2))
+        (0.05 * Ledd_arr * t_salp_arr / (x_pc*pc.to_value('m'))**2))
     return M_lostE
 
 
@@ -303,19 +304,18 @@ def mass_lost_momentum(x_pc: float) -> np.ndarray:
     # atmospheric mass loss [kg] with power replaced by momentum-driven power equation (equation 20, Ambrifi et al. 2022)
 
     M_lostM = ((3 / (8 * np.pi * G * rho_earth_like)) *
-        (0.001 * Ledd_arr * t_salp_arr / (x_pc * pc)**2))
+        (0.001 * Ledd_arr * t_salp_arr / (x_pc*pc.to_value('m'))**2))
     return M_lostM
 
 # plot ozone depletion
 
-def plot_ozone_depletion():
+def plot_ozone_depletion(x_list):
     # energy-driven (index 0)
-    plot_driven_ozone_depletion(driver_index=0, legend_title='Energy-Driven')
+    plot_driven_ozone_depletion(x_list, driver_index=0, legend_title='Energy-Driven')
     # momentum-driven (index 1)
-    plot_driven_ozone_depletion(driver_index=1, legend_title='Momentum-Driven')
+    plot_driven_ozone_depletion(x_list, driver_index=1, legend_title='Momentum-Driven')
 
-def plot_driven_ozone_depletion(driver_index, legend_title):
-    x_list = [100., 800., 5000., 10000., 15000.]
+def plot_driven_ozone_depletion(x_list, driver_index, legend_title):
     # energy-driven (index 0)
     fig, ax = plt.subplots(figsize=(7, 5))
     for i, x_pc in enumerate(x_list):
@@ -331,13 +331,12 @@ def plot_driven_ozone_depletion(driver_index, legend_title):
 
 # plot timescale for 90% depletion
 
-def plot_deltaT_90pct():
+def plot_deltaT_90pct(x_list):
 
-    plot_driven_deltaT_90pct(driver_index=0, legend_title='Energy-Driven')
-    plot_driven_deltaT_90pct(driver_index=1, legend_title='Momentum-Driven')
+    plot_driven_deltaT_90pct(x_list, driver_index=0, legend_title='Energy-Driven')
+    plot_driven_deltaT_90pct(x_list, driver_index=1, legend_title='Momentum-Driven')
 
-def plot_driven_deltaT_90pct(driver_index, legend_title):
-    x_list = [100., 800., 5000., 10000., 15000.]
+def plot_driven_deltaT_90pct(x_list, driver_index, legend_title):
     fig, ax = plt.subplots(figsize=(7, 5))
     for i, x_pc in enumerate(x_list):
         plt.plot(bh_m_plot, deltaT(x_pc, driver_index), colors[i], linestyle='-', label=f'R:{x_pc/100:.0f} kpc')
@@ -352,25 +351,24 @@ def plot_driven_deltaT_90pct(driver_index, legend_title):
 
 # plot heating and most probable velocities
 
-def plot_heating_and_velocities():
-    plot_heating()
-    plot_most_probable_velocities()
+def plot_heating_and_velocities(x_list):
+    plot_heating(x_list)
+    plot_most_probable_velocities(x_list)
 
-def plot_heating():
+def plot_heating(x_list):
     # energy-driven heating
-    plot_driven_heating(driver_index=0, legend_title='Energy-Driven')
+    plot_driven_heating(x_list, driver_index=0, legend_title='Energy-Driven')
 
     # momentum-driven heating
-    plot_driven_heating(driver_index=1, legend_title='Momentum-Driven')
+    plot_driven_heating(x_list, driver_index=1, legend_title='Momentum-Driven')
 
-def plot_most_probable_velocities():
+def plot_most_probable_velocities(x_list):
     # energy-driven most probable velocities
-    plot_driven_most_probable_velocities(driver_index=0, legend_title='Energy-Driven')
+    plot_driven_most_probable_velocities(x_list, driver_index=0, legend_title='Energy-Driven')
     # momentum-driven most probable velocities
-    plot_driven_most_probable_velocities(driver_index=1, legend_title='Momentum-Driven')
+    plot_driven_most_probable_velocities(x_list, driver_index=1, legend_title='Momentum-Driven')
 
-def plot_driven_heating(driver_index, legend_title):
-    x_list = [100., 800., 5000., 10000., 15000.]
+def plot_driven_heating(x_list, driver_index, legend_title):
     fig, ax = plt.subplots(figsize=(7, 5))
     for i, x_pc in enumerate(x_list):
         plt.plot(bh_m_plot, Tnew(x_pc, 0, driver_index), colors[i],
@@ -386,8 +384,7 @@ def plot_driven_heating(driver_index, legend_title):
     filename = f'Heating {legend_title}.png'
     fig.savefig(mass_dir / filename)
 
-def plot_driven_most_probable_velocities(driver_index, legend_title):
-    x_list = [100., 800., 5000., 10000., 15000.]
+def plot_driven_most_probable_velocities(x_list, driver_index, legend_title):
     fig, ax = plt.subplots(figsize=(7, 5))
     # plot escape velocity (converted to km/s)
     plt.plot(bh_m_plot, v_esc, 'firebrick', linestyle=':', linewidth=3, alpha=0.9,
@@ -410,12 +407,11 @@ def plot_driven_most_probable_velocities(driver_index, legend_title):
 
 # plot mass loss
 
-def plot_mass_loss():
-    plot_driven_mass_loss(driver=mass_lost_energy, legend_title='Energy-Driven')
-    plot_driven_mass_loss(driver=mass_lost_momentum, legend_title='Momentum-Driven')
+def plot_mass_loss(x_list):
+    plot_driven_mass_loss(x_list, driver=mass_lost_energy, legend_title='Energy-Driven')
+    plot_driven_mass_loss(x_list, driver=mass_lost_momentum, legend_title='Momentum-Driven')
 
-def plot_driven_mass_loss(driver, legend_title):
-    x_list = [100., 800., 5000., 10000., 15000.]
+def plot_driven_mass_loss(x_list, driver, legend_title):
     fig, ax = plt.subplots(figsize=(7, 5))
     for n, x_pc in enumerate(x_list):
         plt.plot(bh_m_plot, driver(x_pc) / ma_earth, colors[n], linewidth=1.7,
@@ -434,10 +430,11 @@ def plot_driven_mass_loss(driver, legend_title):
 # ---------------------------
 def main():
     """run all plotting functions"""
-    plot_ozone_depletion()
-    plot_deltaT_90pct()
-    plot_heating_and_velocities()
-    plot_mass_loss()
+    x_list = [100., 800., 5000., 10000., 15000.]
+    plot_ozone_depletion(x_list)
+    plot_deltaT_90pct(x_list)
+    plot_heating_and_velocities(x_list)
+    plot_mass_loss(x_list)
 
 
 if __name__ == "__main__":
