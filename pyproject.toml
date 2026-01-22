@@ -16,6 +16,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License"
 ]
 dependencies = [
+    "astropy>=6.1.7",
     "ipython",
     "jupyterlab",
     "matplotlib",
