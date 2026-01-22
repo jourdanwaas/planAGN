@@ -1,8 +1,11 @@
-# -*- coding: utf-8 -*-
+## import stuff
+
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+from astropy.constants import c as c_const, G as G_const, k_B, m_p, M_earth, M_sun, L_sun
+import astropy.units as u
 
 def run_model(name, M_bh, save_plots=True):
     """
@@ -56,18 +59,18 @@ def run_model(name, M_bh, save_plots=True):
 
     ## constants
 
-    c = 299792458.                     #m/s
-    G = 6.67*10**(-11.)                #International System of Units (SI)
-    yr_in_days = 365.256               #sidereal year
-    yr_in_secs = yr_in_days * 24. * 60. * 60. #sidereal year in seconds
-    r_pc = 3.09*10**(16.)              #pc to meter conversion
-    kb = 1.38 * 10.**(-23.)            #Boltzmann constant (SI)
-    mp = 1.67 * 10.**(-27.)            #Proton mass (kg)
-    m_Earth=5.973*10**24.              #Earth mass (kg)
-    SolarMass = 1.9985*10.**30.        # (SI)
-    SolarLum = 3.828*10.**26           # in watts
-    R_kpc = np.arange(0.1,150)          #distance to bh in kpc where the radius is a range
-    R_cm = np.array(R_kpc)*(3.1*10**21)  #kpc to cm
+    c = c_const.value                  # speed of light [m/s]
+    G = G_const.value                  # gravitational constant [m^3 / (kg s^2)]
+    kb = k_B.value                     # Boltzmann constant [J/K]
+    mp = m_p.value                     # proton mass [kg]
+    m_Earth = M_earth.value            # Earth mass [kg]
+    SolarMass = M_sun.value            # solar mass [kg]
+    SolarLum = L_sun.value             # solar luminosity [W]
+
+    yr_in_secs = (365.256 * u.day).to(u.s).value  # sidereal year [s]
+    r_pc = (1 * u.pc).to(u.m).value               # parsec to meter [m]
+    R_kpc = np.arange(0.1, 150)                   # range of radial distances to BH [kpc]
+    R_cm = (R_kpc * u.kpc).to(u.cm).value         # radius/distance to BH [cm]
 
     ## BH data
 
