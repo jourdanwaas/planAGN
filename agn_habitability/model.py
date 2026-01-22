@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 AGN natural mass range atmospheric-impact model
 \
@@ -25,17 +24,20 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+from astropy.constants import c as c_const, G as G_const, k_B, m_p, M_earth, M_sun, L_sun
+import astropy.units as u
+
 ## define physical constants and standard conversions
 
-c = 299792458.0                  # speed of light [m s^-1]
-G = 6.67e-11                     # gravitational constant [m^3 kg^-1 s^-2]
-yr_in_days = 365.256             # sidereal year [days]
-yr_in_secs = yr_in_days * 24.0 * 3600.0  # seconds in a sidereal year
-pc_to_m = 3.09e16                # parsec to meters
-kb = 1.38e-23                    # Boltzmann constant [J K^-1]
-mp = 1.67e-27                    # proton mass [kg]
-SolarMass = 1.9985e30            # Solar mass in kg
-m_Earth = 5.973e24               # Earth mass in kg
+c = c_const.value                  # speed of light [m/s]
+G = G_const.value                  # gravitational constant [m^3 / (kg s^2)]
+kb = k_B.value                     # Boltzmann constant [J/K]
+mp = m_p.value                     # proton mass [kg]
+m_Earth = M_earth.value            # Earth mass [kg]
+SolarMass = M_sun.value            # solar mass [kg]
+
+yr_in_secs = (365.256 * u.day).to(u.s).value  # sidereal year [s]
+pc_to_m = (1 * u.pc).to(u.m).value            # parsec to meter [m]
 
 ## planetary and molecular parameters
 
