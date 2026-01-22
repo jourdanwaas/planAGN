@@ -22,17 +22,18 @@ This script computes and plots a set of diagnostics for planetary atmospheres ex
 │                         the creator's initials, and a short `-` delimited description, e.g.
 │                         `1.0-jqp-initial-data-exploration`.
 │
-├── reports/           <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures/       <- Generated graphics and figures to be used in reporting
+├── reports/           <- Generated outputs from scripts
+│   ├── figures/       <- Generated graphics and figures as .png
+│   └── results/       <- Generated .tex file outputs
 │
 └── agn_habitability/  <- Source code for use in this project.
     ├── __init__.py             <- Makes agn_habitability a Python module
-    ├── config.py               <- Store useful variables and configuration
     ├── main.py                 <- Stub for script code
-    └── model.py                <- Script to create plots for features against black hole mass
+    ├── model.py                <- Script to create plots across the natural range of black hole masses
+    └── sample_model.py         <- Script to create plots and reports for any user-input black hole mass
 ```
 
-## Getting started
+## Getting Started
 
 ### Setting up the environment
 
@@ -44,9 +45,64 @@ This script computes and plots a set of diagnostics for planetary atmospheres ex
    ```
 
 ### Running the code
-Run either of the following lines to run the corresponding script
+
+There are two main scripts in this project:
+
+1. `model.py` - runs the model automatically across a range of SMBH masses
+2. `sample_model.py` - runs the model interactively for user-specified input values
+
+#### Option 1: Run the full mass-range model
+
+This will generate all plots (atmospheric heating, most probable velocity of molecules in the atmosphere, atmospheric mass loss, percentage of ozone depletion, and timescale for 90% ozone depletion) across the natural range of SMBH masses:
 
 ```sh
 uv run agn_habitability/model.py
+```
+
+All resulting plots will be saved automatically under: 
+
+```sh
+reports/figures/
+```
+
+#### Option 2: Run an interactive single-galaxy model
+
+To run the model for a specific galaxy and SMBH mass, use:
+
+```sh
 uv run agn_habitability/sample_model.py
 ```
+
+The script will then prompt you for:
+
+```sh
+Enter galaxy name (or 'q' to quit):
+Enter black hole mass [M_sun]:
+Save plots? (y/n):
+```
+
+For example:
+
+```sh
+Enter galaxy name (or 'q' to quit): 3C 390.3
+Enter black hole mass [M_sun]: 2.8e8
+Save plots? (y/n): y
+```
+
+This will compute and save the corresponding plots and results for that object in:
+
+```sh
+reports/figures/3C_390.3/
+reports/results/3C_390.3/
+```
+
+### Notes
+
+- All dependencies (e.g. `astropy`, `matplotlib`, `numpy`) are automatically installed by `uv` from the `uv.lock` file.
+- To run the code again in a fresh environment, simply use:
+
+```sh
+uv sync
+```
+
+- If you want to view the generated figures, you'll find them in `.png` format under `reports/figures`.
