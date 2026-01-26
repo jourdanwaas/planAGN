@@ -21,6 +21,7 @@ dependencies = [
     "jupyterlab",
     "matplotlib",
     "mkdocs",
+    "mkdocs-material>=9.7.1",
     "notebook",
     "numpy",
     "pip",
