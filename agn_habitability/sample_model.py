@@ -598,18 +598,6 @@ def run_model(name, M_bh, save_plots=True):
 
     ## distances where major ozone depletion (90% loss) due to NO formation is significant
 
-    def find_intersection_radius_ozone(x, y, value):
-        """Return the radius (in kpc) where y crosses 'value', using linear interpolation."""
-        diff = y - value
-        idx = np.where(np.diff(np.sign(diff)))[0]
-        if len(idx) == 0:
-            return None
-        i = idx[0]
-        # Linear interpolation for better precision
-        x0, x1 = x[i], x[i + 1]
-        y0, y1 = y[i], y[i + 1]
-        return x0 + (value - y0) * (x1 - x0) / (y1 - y0)
-
     # define ozone depletion cases
     cases_ozone = [("energy-driven", R_kpc, time_dep_ed), ("momentum-driven", R_kpc, time_dep_md)]
 
@@ -632,6 +620,18 @@ def run_model(name, M_bh, save_plots=True):
             f.write(line + "\n")
         f.write("\n")
 
+
+def find_intersection_radius_ozone(x, y, value):
+    """Return the radius (in kpc) where y crosses 'value', using linear interpolation."""
+    diff = y - value
+    idx = np.where(np.diff(np.sign(diff)))[0]
+    if len(idx) == 0:
+        return None
+    i = idx[0]
+    # Linear interpolation for better precision
+    x0, x1 = x[i], x[i + 1]
+    y0, y1 = y[i], y[i + 1]
+    return x0 + (value - y0) * (x1 - x0) / (y1 - y0)
 
 if __name__ == "__main__":
     while True:
