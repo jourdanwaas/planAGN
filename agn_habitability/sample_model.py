@@ -32,7 +32,7 @@ def run_model(name, M_bh, save_plots=True):
 
     ## create a subfolder for object
 
-    object_dir = plot_dir / name.replace(" ", "_").replace("*", "star")
+    object_dir = plot_dir / sanitize_name(name)
 
     ## check to make sure it exists
 
@@ -44,7 +44,7 @@ def run_model(name, M_bh, save_plots=True):
 
     ## create subfolder for results
 
-    output_dir = result_dir / name.replace(" ", "_").replace("*", "star")
+    output_dir = result_dir / sanitize_name(name)
 
     ## make sure it exists
 
@@ -52,7 +52,7 @@ def run_model(name, M_bh, save_plots=True):
 
     ## create full path for output file
 
-    output_file = output_dir / f"results__{name.replace(' ', '_').replace('*', 'star')}.txt"
+    output_file = output_dir / f"results__{sanitize_name(name)}.txt"
 
     ## formatting for the output file for all printed results
     with open(output_file, "w", encoding="utf-8") as f:
@@ -157,7 +157,7 @@ def run_model(name, M_bh, save_plots=True):
     )
 
     # define filename and full save path
-    filename = f"heating__{name.replace(' ', '_').replace('*', 'star')}.png"
+    filename = f"heating__{sanitize_name(name)}.png"
     save_path = object_dir / filename
 
     if save_plots:
@@ -219,7 +219,7 @@ def run_model(name, M_bh, save_plots=True):
     )
 
     # define filename and full save path
-    filename = f"probvel__{name.replace(' ', '_').replace('*', 'star')}.png"
+    filename = f"probvel__{sanitize_name(name)}.png"
     save_path = object_dir / filename
 
     if save_plots:
@@ -352,7 +352,7 @@ def run_model(name, M_bh, save_plots=True):
     )
 
     # define filename and full save path
-    filename = f"massloss__{name.replace(' ', '_').replace('*', 'star')}.png"
+    filename = f"massloss__{sanitize_name(name)}.png"
     save_path = object_dir / filename
 
     if save_plots:
@@ -530,7 +530,7 @@ def run_model(name, M_bh, save_plots=True):
     )
 
     # define filename and full save path
-    filename = f"ozonedepl__{name.replace(' ', '_').replace('*', 'star')}.png"
+    filename = f"ozonedepl__{sanitize_name(name)}.png"
     save_path = object_dir / filename
 
     if save_plots:
@@ -588,7 +588,7 @@ def run_model(name, M_bh, save_plots=True):
     )
 
     # define filename and full save path
-    filename = f"90percent__{name.replace(' ', '_').replace('*', 'star')}.png"
+    filename = f"90percent__{sanitize_name(name)}.png"
     save_path = object_dir / filename
 
     if save_plots:
@@ -632,6 +632,10 @@ def run_model(name, M_bh, save_plots=True):
             f.write(line + "\n")
         f.write("\n")
 
+
+def sanitize_name(name):
+    """Replace a version of a string suitable for a Windows filename."""
+    return name.replace(' ', '_').replace('*', 'star')
 
 if __name__ == "__main__":
     while True:
