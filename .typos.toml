@@ -1,0 +1,6 @@
+[default.extend-words]
+# author names
+Waas = "Waas"
+
+# abbreviations
+strat = "strat"

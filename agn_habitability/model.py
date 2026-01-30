@@ -162,7 +162,7 @@ a = 1
 b = 10
 
 R0 = 9e14  # rate at which the ambient flux of cosmic rays (CRs) generates NO [molecules cm^-2 yr^-1] (Ambrifi et al. 2022)
-phi0 = 9e4  # energy flux carried by backround CRs [erg cm^-2 yr^-1] (Ambrifi et al. 2022)
+phi0 = 9e4  # energy flux carried by background CRs [erg cm^-2 yr^-1] (Ambrifi et al. 2022)
 y0 = 3  # unperturbed stratospheric NO abundances [ppb] (Ambrifi et al. 2022)
 sigmastrat = 5e23  # stratospheric column density [molecules cm^-2] (Ambrifi et al. 2022)
 
