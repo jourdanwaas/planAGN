@@ -59,7 +59,7 @@ This will generate all plots (atmospheric heating, most probable velocity of mol
 uv run agn_habitability/model.py
 ```
 
-All resulting plots will be saved automatically under: 
+All resulting plots will be saved automatically under:
 
 ```sh
 reports/figures/
@@ -99,11 +99,12 @@ reports/results/3C_390.3/
 ### Notes
 
 - All dependencies (e.g. `astropy`, `matplotlib`, `numpy`) are automatically installed by `uv` from the `uv.lock` file.
+
 - To run the code again in a fresh environment, simply use:
 
-```sh
-uv sync
-```
+  ```sh
+  uv sync
+  ```
 
 - If you want to view the generated figures, you'll find them in `.png` format under `reports/figures`.
 
