@@ -3,12 +3,36 @@
 from pathlib import Path
 
 from astropy.constants import G as G_const
-from astropy.constants import L_sun, M_earth, M_sun, k_B
+from astropy.constants import L_sun, M_earth, M_sun, k_B, m_p
 from astropy.constants import c as c_const
 import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
 
+## constants
+
+c = c_const.value                  # speed of light [m/s]
+G = G_const.value                  # gravitational constant [m^3 / (kg s^2)]
+kb = k_B.value                     # Boltzmann constant [J/K]
+#mp = m_p.value                    # proton mass [kg]
+m_Earth = M_earth.value            # Earth mass [kg]
+SolarMass = M_sun.value            # solar mass [kg]
+SolarLum = L_sun.value             # solar luminosity [W]
+
+yr_in_secs = (365.256 * u.day).to(u.s).value  # sidereal year [s]
+r_pc = (1 * u.pc).to(u.m).value               # parsec to meter [m]
+
+R_Earth = 6_371_000             # Earth radius (SI)
+R_Jupiter = 69_911_000          # Jupiter radius (SI)
+Rp = [R_Earth, R_Jupiter]       # Earth and Jup. radii (SI)
+rho = 5.5e3                     # Earth density (SI)
+vfug = np.sqrt(2 * G * m_Earth / R_Earth)  # Escape velocity from the Earth (SI)
+ma = 5.1e18                     # Earth atmospheric mass (SI)
+# mm = 2.5e16                   # Mars atmospheric mass  (SI)
+m_h2 = 2.02 * m_p.value         # molecular hydrogen mass (SI)
+# m_wat = 18.01 * m_p.value     # water molecule mass (SI)
+# m_o2 = 5.31e-26               # molecular oxygen mass (SI)
+m_n2 = 28.01 * m_p.value        # molecular nitrogen mass (SI)
 
 def run_model(name, M_bh, save_plots=True):
     """
@@ -60,18 +84,7 @@ def run_model(name, M_bh, save_plots=True):
         f.write("Black hole mass: " + f"{mantissa:.1f} × 10^{exponent} M_sun\n")
         f.write("=" * 50 + "\n\n")
 
-    ## constants
-
-    c = c_const.value                  # speed of light [m/s]
-    G = G_const.value                  # gravitational constant [m^3 / (kg s^2)]
-    kb = k_B.value                     # Boltzmann constant [J/K]
-    #mp = m_p.value                    # proton mass [kg]
-    m_Earth = M_earth.value            # Earth mass [kg]
-    SolarMass = M_sun.value            # solar mass [kg]
-    SolarLum = L_sun.value             # solar luminosity [W]
-
-    yr_in_secs = (365.256 * u.day).to(u.s).value  # sidereal year [s]
-    r_pc = (1 * u.pc).to(u.m).value               # parsec to meter [m]
+    # Running parameters
     R_kpc = np.arange(0.1, 150)                   # range of radial distances to BH [kpc]
     R_cm = (R_kpc * u.kpc).to(u.cm).value         # radius/distance to BH [cm]
 
@@ -87,19 +100,10 @@ def run_model(name, M_bh, save_plots=True):
     # Typical values of UFOs and Warm Absorbers' velocities, Tombesi et al. 2013
 
     # v = 0.1*c                      # UFOs speed (SI)
-    # v_out=[1e5, 1e6]               # WAs speed (SI)
+    # v_out = [1e5, 1e6]             # WAs speed (SI)
 
     # Planetary and atmospheric parameters
 
-    Rp = [6371000, 69911000]        # Earth and Jup. radii (SI)
-    rho = 5.5e3                     # Earth density (SI)
-    vfug = np.sqrt(2 * G * m_Earth / Rp[0])  # Escape velocity from the Earth (SI)
-    ma = 5.1e18                     # Earth atmospheric mass (SI)
-    # mm = 2.5e16                   # Mars atmospheric mass  (SI)
-    m_h2 = 2.02 * 1.66e-27          # molecular hydrogen mass (SI)
-    # m_wat = 18.01 *1.66e-27       # water molecule mass (SI)
-    # m_o2 = 5.31e-26               # molecular oxygen mass (SI)
-    m_n2 = 28.01 * 1.66e-27         # molecular nitrogen mass (SI)
     mpart = [m_n2, m_h2]            # list of molecular masses
     T0 = 273.15  # assumed initial temperature for planetary atmosphere (SI)
     Cp = [
@@ -406,14 +410,14 @@ def run_model(name, M_bh, save_plots=True):
     sigma_strat = 5e23  # in molec cm^-2
 
     # Compute the constant term (c in quadratic formula)
-    c = -(R0 * ed_flux / Phi0) * ((10 + y0) * t_salp_yr * 10**9 / sigma_strat)
+    qc = -(R0 * ed_flux / Phi0) * ((10 + y0) * t_salp_yr * 10**9 / sigma_strat)
 
     # Quadratic coefficients
     a = 1  # Coefficient of y^2
     b = 10  # Coefficient of y
 
     # Solve using the quadratic formula
-    discriminant = b**2 - 4 * a * c
+    discriminant = b**2 - 4 * a * qc
 
     """if discriminant >= 0:
         y1_ed = (-b + np.sqrt(discriminant)) / (2*a)
@@ -440,14 +444,14 @@ def run_model(name, M_bh, save_plots=True):
 
     # momentum-driven NO concentration (y) in ppb
     # Compute the constant term (c in quadratic formula)
-    c = -(R0 * md_flux / Phi0) * ((10 + y0) * t_salp_yr * 10**9 / sigma_strat)
+    qc = -(R0 * md_flux / Phi0) * ((10 + y0) * t_salp_yr * 10**9 / sigma_strat)
 
     # Quadratic coefficients
     a = 1  # Coefficient of y^2
     b = 10  # Coefficient of y
 
     # Solve using the quadratic formula
-    discriminant = b**2 - 4 * a * c
+    discriminant = b**2 - 4 * a * qc
 
     """if discriminant >= 0:
         y1_md = (-b + np.sqrt(discriminant)) / (2*a)
@@ -604,18 +608,6 @@ def run_model(name, M_bh, save_plots=True):
 
     ## distances where major ozone depletion (90% loss) due to NO formation is significant
 
-    def find_intersection_radius_ozone(x, y, value):
-        """Return the radius (in kpc) where y crosses 'value', using linear interpolation."""
-        diff = y - value
-        idx = np.where(np.diff(np.sign(diff)))[0]
-        if len(idx) == 0:
-            return None
-        i = idx[0]
-        # Linear interpolation for better precision
-        x0, x1 = x[i], x[i + 1]
-        y0, y1 = y[i], y[i + 1]
-        return x0 + (value - y0) * (x1 - x0) / (y1 - y0)
-
     # define ozone depletion cases
     cases_ozone = [("energy-driven", R_kpc, time_dep_ed), ("momentum-driven", R_kpc, time_dep_md)]
 
@@ -637,6 +629,19 @@ def run_model(name, M_bh, save_plots=True):
         for line in ozone_results:
             f.write(line + "\n")
         f.write("\n")
+
+
+def find_intersection_radius_ozone(x, y, value):
+    """Return the radius (in kpc) where y crosses 'value', using linear interpolation."""
+    diff = y - value
+    idx = np.where(np.diff(np.sign(diff)))[0]
+    if len(idx) == 0:
+        return None
+    i = idx[0]
+    # Linear interpolation for better precision
+    x0, x1 = x[i], x[i + 1]
+    y0, y1 = y[i], y[i + 1]
+    return x0 + (value - y0) * (x1 - x0) / (y1 - y0)
 
 
 def sanitize_name(name):

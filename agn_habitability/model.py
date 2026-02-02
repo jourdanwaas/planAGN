@@ -34,13 +34,15 @@ pc_to_m = (1 * u.pc).to(u.m).value            # parsec to meter [m]
 
 ## planetary and molecular parameters
 
-Rp = [6371000, 69911000]    # Earth and Jupiter radii [m]
+R_Earth = 6_371_000         # Earth and Jupiter radii [m]
+R_Jupiter = 69_911_000      # Jupiter radius [m]
+Rp = [R_Earth, R_Jupiter]   # Earth and Jup. radii (SI)
 rho_earth_like = 5.5e3      # Earth density [kg m^-3]
 ma_earth = 5.1e18           # Earth atmospheric mass [kg]
 mm_mars_atm = 2.5e16        # Mars atmospheric mass [kg] (unused currently)
-m_h2 = 2.02 * 1.66e-27      # molecular hydrogen mass [kg]
-m_wat = 18.01 * 1.66e-27    # water molecule mass [kg]
-m_n2 = 28.01 * 1.66e-27     # molecular nitrogen mass [kg]
+m_h2 = 2.02 * m_p.value     # molecular hydrogen mass [kg]
+m_wat = 18.01 * m_p.value   # water molecule mass [kg]
+m_n2 = 28.01 * m_p.value    # molecular nitrogen mass [kg]
 mpart = [m_n2, m_h2]        # list used for computing thermal velocities
 T0 = 273.15                 # base temperature assumption [K]
 Cp = [1320, 18300, 4444]    # specific heats (N2, H2, H2O) [J kg^-1 K^-1]
