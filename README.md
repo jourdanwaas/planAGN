@@ -109,6 +109,7 @@ reports/results/3C_390.3/
 - If you want to view the generated figures, you'll find them in `.png` format under `reports/figures`.
 
 - If you want to fix the typos in the source code, run
-```sh
-uv run typos
-```
+
+  ```sh
+  uv run typos
+  ```
