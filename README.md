@@ -9,28 +9,28 @@ This script computes and plots a set of diagnostics for planetary atmospheres ex
 ## Project Organization
 
 ```
-├── LICENSE            <- Open-source license (MIT)
-├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
-├── README.md          <- The top-level README for developers using this project.
-├── pyproject.toml     <- Project configuration file with package metadata for
-│                         agn_habitability and configuration for tools like black
-├── uv.lock            <- Lock file specifying dependencies for uv to use
+├── LICENSE            ← Open-source license (MIT)
+├── Makefile           ← Makefile with convenience commands like `make data` or `make train`
+├── README.md          ← The top-level README for developers using this project.
+├── pyproject.toml     ← Project configuration file with package metadata for
+│                        agn_habitability and configuration for tools like black
+├── uv.lock            ← Lock file specifying dependencies for uv to use
 │
-├── docs/              <- Project documentation using mkdocs; see www.mkdocs.org for details
+├── docs/              ← Project documentation using mkdocs; see www.mkdocs.org for details
 │
-├── notebooks/         <- Jupyter notebooks. Naming convention is a number (for ordering),
-│                         the creator's initials, and a short `-` delimited description, e.g.
-│                         `1.0-jqp-initial-data-exploration`.
+├── notebooks/         ← Jupyter notebooks. Naming convention is a number (for ordering),
+│                        the creator's initials, and a short `-` delimited description, e.g.
+│                        `1.0-jqp-initial-data-exploration`.
 │
-├── reports/           <- Generated outputs from scripts
-│   ├── figures/       <- Generated graphics and figures as .png
-│   └── results/       <- Generated .tex file outputs
+├── reports/           ← Generated outputs from scripts
+│   ├── figures/       ← Generated graphics and figures as .png
+│   └── results/       ← Generated .tex file outputs
 │
-└── agn_habitability/  <- Source code for use in this project.
-    ├── __init__.py             <- Makes agn_habitability a Python module
-    ├── main.py                 <- Stub for script code
-    ├── model.py                <- Script to create plots across the natural range of black hole masses
-    └── sample_model.py         <- Script to create plots and reports for any user-input black hole mass
+└── agn_habitability/  ← Source code for use in this project.
+    ├── __init__.py             ← Makes agn_habitability a Python module
+    ├── main.py                 ← Stub for script code
+    ├── model.py                ← Script to create plots across the natural range of black hole masses
+    └── sample_model.py         ← Script to create plots and reports for any user-input black hole mass
 ```
 
 ## Getting Started
