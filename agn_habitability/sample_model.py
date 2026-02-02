@@ -118,9 +118,12 @@ def run_model(name, M_bh, save_plots=True):
         0.001,
     ]  # fractions of the AGN luminosity to be converted into wind's kinetic power
 
-    def Tnew(x, k, j):  # New atmospheric temperature, depending on the distance from the SMBH (x),
-        # atmospheric composition (k=0 : nitrogen ; k=1 : hydrogen ; k=2 : water),
-        # and outflow's kinetic power (j=0 : kinetic power = 5%Ledd ; j=1 : kinetic power = 0.1%Ledd).
+    def Tnew(x, k, j):
+        """
+        New atmospheric temperature, depending on the distance from the SMBH (x),
+        atmospheric composition (k=0 : nitrogen ; k=1 : hydrogen ; k=2 : water),
+        and outflow's kinetic power (j=0 : kinetic power = 5%Ledd ; j=1 : kinetic power = 0.1%Ledd).
+        """
         # y=np.zeros((len(x)))
         # for w in range(0,len(x)):
         # y[w]=  (1/(4*ma*Cp[k]))*(kinpow[j]*Ledd*t_salp)*(Rp[0]/(x[w]*r_pc))**2
@@ -165,9 +168,12 @@ def run_model(name, M_bh, save_plots=True):
 
     # plt.show()
 
-    def Vmp(x, k, j):  # Most probable particles' speed, depending on the amount of heat
-        # which entered the atmosphere, hence depending on distance from
-        # the SMBH (x), atmospheric composition (k) and kinetic power (j).
+    def Vmp(x, k, j):
+        """
+        Most probable particles' speed, depending on the amount of heat
+        which entered the atmosphere, hence depending on distance from
+        the SMBH (x), atmospheric composition (k) and kinetic power (j).
+        """
         # y=np.zeros((len(x)))
         # for w in range(0,len(x)):
         # y[w]= np.sqrt((2*kb*(T0+Tnew(x,k,j)[w])) /mpart[k])
