@@ -284,15 +284,15 @@ def run_model(name, M_bh, save_plots=True):
     M_lostE = np.zeros(
         (len(x))
     )  # Mass lost in the interaction with the outflow in the energy driven (E) case
-    for i in range(0, len(x)):
-        m = 3 / (16 * np.pi * G * rho) * (kinpow[0] * Ledd * t_salp / (x[i] * r_pc) ** 2)
+    for i, x_i in enumerate(x):
+        m = 3 / (16 * np.pi * G * rho) * (kinpow[0] * Ledd * t_salp / (x_i * r_pc) ** 2)
         M_lostE[i] = m
 
     M_lostM = np.zeros(
         (len(x))
     )  # Mass lost in the interaction with the outflow in the momentum driven (M) case
-    for i in range(0, len(x)):
-        m = 3 / (8 * np.pi * G * rho) * (kinpow[1] * Ledd * t_salp / (x[i] * r_pc) ** 2)
+    for i, x_i in enumerate(x):
+        m = 3 / (8 * np.pi * G * rho) * (kinpow[1] * Ledd * t_salp / (x_i * r_pc) ** 2)
         M_lostM[i] = m
 
     fig = plt.figure(facecolor="white", figsize=(7, 5))
