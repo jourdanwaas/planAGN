@@ -50,32 +50,24 @@ def run_model(name, M_bh, save_plots=True):
     mantissa = float(mantissa)
     exponent = int(exponent)
 
-    ## define path to plots directory
+    # base directory for all outputs
+    reports_dir = Path(__file__).parent.parent.resolve() / "reports"
 
-    plot_dir = Path(__file__).parent.parent.resolve() / "reports" / "figures"
+    # define path to plots directory
+    plot_dir = reports_dir / "figures"
 
-    ## create a subfolder for object
-
+    # create a subfolder for object and make sure it exists
     object_dir = plot_dir / sanitize_name(name)
-
-    ## check to make sure it exists
-
     object_dir.mkdir(parents=True, exist_ok=True)
 
-    ## define path to results directory
+    # define path to results directory
+    result_dir = reports_dir / "results"
 
-    result_dir = Path(__file__).parent.parent.resolve() / "reports" / "results"
-
-    ## create subfolder for results
-
+    # create subfolder for results and make sure it exists
     output_dir = result_dir / sanitize_name(name)
-
-    ## make sure it exists
-
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    ## create full path for output file
-
+    # create full path for output file
     output_file = output_dir / f"results__{sanitize_name(name)}.txt"
 
     ## formatting for the output file for all printed results
