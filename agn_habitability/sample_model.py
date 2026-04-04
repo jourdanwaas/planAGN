@@ -120,9 +120,6 @@ def run_model(name, M_bh, save_plots=True):
         atmospheric composition (k=0 : nitrogen ; k=1 : hydrogen ; k=2 : water),
         and outflow's kinetic power (j=0 : kinetic power = 5%Ledd ; j=1 : kinetic power = 0.1%Ledd).
         """
-        # y=np.zeros((len(x)))
-        # for w in range(0,len(x)):
-        # y[w]=  (1/(4*ma*Cp[k]))*(kinpow[j]*Ledd*t_salp)*(Rp[0]/(x[w]*r_pc))**2
         y = (1 / (4 * ma * Cp[k])) * (kinpow[j] * Ledd * t_salp) * (Rp[0] / (x * r_pc)) ** 2
         return y
 
@@ -170,9 +167,6 @@ def run_model(name, M_bh, save_plots=True):
         which entered the atmosphere, hence depending on distance from
         the SMBH (x), atmospheric composition (k) and kinetic power (j).
         """
-        # y=np.zeros((len(x)))
-        # for w in range(0,len(x)):
-        # y[w]= np.sqrt((2*kb*(T0+Tnew(x,k,j)[w])) /mpart[k])
         y = np.sqrt((2 * kb * (T0 + Tnew(x, k, j))) / mpart[k])
         return y
 
