@@ -33,12 +33,6 @@ nav:
       - Running the Models: running.md
       - Outputs: output.md
 
-  - Physical Model:
-      - Overview: 
-      - Heating: 
-      - Atmospheric Escape: 
-      - Ozone Chemistry: 
-
   - References: ref.md
   - Troubleshooting and Known Issues: issues.md
 
