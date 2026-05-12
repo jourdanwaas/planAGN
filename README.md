@@ -1,4 +1,4 @@
-# AGN Habitability
+# planAGN
 
 <a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
@@ -24,7 +24,7 @@ This script computes and plots a set of diagnostics for planetary atmospheres ex
 │   ├── figures/       ← Generated graphics and figures as .png files
 │   └── results/       ← Generated .tex file outputs
 │
-└── agn_habitability/  ← Source code for use in this project.
+└── planAGN/  ← Source code for use in this project.
     ├── __init__.py             ← Makes agn_habitability a Python module
     ├── main.py                 ← Stub for script code
     ├── model.py                ← Script to create plots across the natural range of black hole masses
@@ -68,7 +68,7 @@ reports/figures/
 To run the model for a specific galaxy and SMBH mass, use:
 
 ```sh
-uv run agn_habitability/sample_model.py
+uv run planAGN/sample_model.py
 ```
 
 The script will then prompt you for:
