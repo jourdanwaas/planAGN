@@ -2,7 +2,7 @@
 # GLOBALS                                                                       #
 #################################################################################
 
-PROJECT_NAME = agn_habitability
+PROJECT_NAME = planAGN
 PYTHON_VERSION = 3.10
 PYTHON_INTERPRETER = python
 
