@@ -10,7 +10,6 @@ This repository accompanies the study:
 Contents:
 
 - [Getting Started](getting-started.md)
-    - [Installation](installation.md)
 
 
 
