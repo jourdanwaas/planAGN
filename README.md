@@ -25,7 +25,7 @@ This script computes and plots a set of diagnostics for planetary atmospheres ex
 │   └── results/       ← Generated .tex file outputs
 │
 └── planAGN/  ← Source code for use in this project.
-    ├── __init__.py             ← Makes agn_habitability a Python module
+    ├── __init__.py             ← Makes planAGN a Python module
     ├── main.py                 ← Stub for script code
     ├── model.py                ← Script to create plots across the natural range of black hole masses
     └── sample_model.py         ← Script to create plots and reports for any user-input black hole mass
