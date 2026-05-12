@@ -18,12 +18,10 @@ This script computes and plots a set of diagnostics for planetary atmospheres ex
 │
 ├── docs/              ← Project documentation using mkdocs; see www.mkdocs.org for details
 │
-├── notebooks/         ← Jupyter notebooks. Naming convention is a number (for ordering),
-│                        the creator's initials, and a short `-` delimited description, e.g.
-│                        `1.0-jqp-initial-data-exploration`.
+├── notebooks/         ← Jupyter notebooks. 
 │
 ├── reports/           ← Generated outputs from scripts
-│   ├── figures/       ← Generated graphics and figures as .png
+│   ├── figures/       ← Generated graphics and figures as .png files
 │   └── results/       ← Generated .tex file outputs
 │
 └── agn_habitability/  ← Source code for use in this project.
