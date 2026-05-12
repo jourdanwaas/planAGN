@@ -6,6 +6,9 @@ There are two main scripts in this project:
 1. `model.py` - runs the model automatically across a range of SMBH masses
 2. `sample_model.py` - runs the model interactively for user-specified input values
 
+!!! tip
+    Use the interactive model for quick testing.
+
 ## 1. Natural Mass Range Model
 
 
