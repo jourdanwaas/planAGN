@@ -19,6 +19,8 @@ For any specific galaxy, with a given SMBH mass input, the model computes the fo
 - Maximum distance of influence for energy-limited hydrodynamic-like escape
 - Maximum distance for major ozone depletion (90% loss) due to nitrogen oxide formation
 
+---
+
 ## 1. Natural Mass Range Model
 
 All resulting plots will be saved automatically under:
@@ -26,6 +28,8 @@ All resulting plots will be saved automatically under:
 ```sh
 reports/figures/natural mass range/
 ```
+
+---
 
 ## 2. Single Galaxy Model
 
