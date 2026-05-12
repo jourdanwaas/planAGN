@@ -4,7 +4,12 @@ site_author: Jourdan Waas
 theme:
   name: material
   features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
     - user.color_mode.toggle
+
   palette:
     - scheme: default
       primary: teal
@@ -16,3 +21,28 @@ theme:
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+
+nav:
+  - Home: index.md
+
+  - Getting Started:
+      - Overview: getting-started.md
+      - Installation: installation.md
+
+  - Quickstart: 
+      - Running the Models: running.md
+      - Outputs: output.md
+
+  - Physical Model:
+      - Overview: 
+      - Heating: 
+      - Atmospheric Escape: 
+      - Ozone Chemistry: 
+
+  - References: ref.md
+  - Troubleshooting and Known Issues: issues.md
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
