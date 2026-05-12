@@ -1,10 +1,9 @@
-site_name: AGN Habitability Model
+site_name: planAGN
 site_author: Jourdan Waas
 
 theme:
   name: material
   features:
-    - navigation.tabs
     - navigation.sections
     - navigation.expand
     - content.code.copy
