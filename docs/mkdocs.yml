@@ -25,9 +25,7 @@ theme:
 nav:
   - Home: index.md
 
-  - Getting Started:
-      - Overview: getting-started.md
-      - Installation: installation.md
+  - Getting Started: getting-started.md
 
   - Quickstart: 
       - Running the Models: running.md
