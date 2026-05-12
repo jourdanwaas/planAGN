@@ -1,6 +1,10 @@
 Getting started
 ===============
 
-This is where you describe how to get set up on a clean install, including the
-commands necessary to get the raw data (using the `sync_data_from_s3` command,
-for example), and then how to make the cleaned, final data sets.
+## Overview
+
+Active galactic nuclei (AGN) emit powerful ultrafast outflows (UFOs) that carry significant energy into their host galaxies. These outflows may interact with planetary atmospheres, depositing energy which drives significant increase in atmospheric temperature, enhancing conditions for escape and depletion of ozone.
+
+This code models these processes using parameterizations for AGN outflows and evaluates their effects across a wide range of supermassive black hole (SMBH) masses and galactocentric distances.
+
+The specifications of the diagnostics can be found in the [output](output.md) section.
