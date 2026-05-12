@@ -54,7 +54,7 @@ There are two main scripts in this project:
 This will generate all plots (atmospheric heating, most probable velocity of molecules in the atmosphere, atmospheric mass loss, percentage of ozone depletion, and timescale for 90% ozone depletion) across the natural range of SMBH masses:
 
 ```sh
-uv run agn_habitability/model.py
+uv run planAGN/model.py
 ```
 
 All resulting plots will be saved automatically under:
