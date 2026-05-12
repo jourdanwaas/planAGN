@@ -1,4 +1,4 @@
-Getting started
+Getting Started
 ===============
 
 ## Overview
@@ -8,3 +8,39 @@ Active galactic nuclei (AGN) emit powerful ultrafast outflows (UFOs) that carry 
 This code models these processes using parameterizations for AGN outflows and evaluates their effects across a wide range of supermassive black hole (SMBH) masses and galactocentric distances.
 
 The specifications of the diagnostics can be found in the [output](output.md) section.
+
+## Installation
+
+### Requirements
+
+- Python: 3.10+
+- Package manager: uv
+
+---
+
+### Install [uv](https://docs.astral.sh/uv)
+
+Follow the official instructions:
+
+→ <https://docs.astral.sh/uv/>
+
+!!! note
+    All dependencies (e.g.,  `astropy`, `matplotlib`, `numpy`) are automatically installed by `uv` from the `uv.lock` file.
+
+---
+
+### Clone the Repository
+
+```sh
+git clone https://github.com/jourdanwaas/planAGN
+```
+
+```sh
+cd planAGN
+```
+
+### Sync Dependencies
+
+```sh
+uv sync
+```
