@@ -9,6 +9,8 @@ There are two main scripts in this project:
 !!! tip
     Use the interactive model for quick testing.
 
+---
+
 ## 1. Natural Mass Range Model
 
 
@@ -23,6 +25,8 @@ This runs the model across the natural range of SMBH masses and generates result
 - Atmospheric mass loss
 - Ozone depletion percentage
 - Timescale for 90% ozone depletion
+
+---
 
 ## 2. Single Galaxy Model
 
