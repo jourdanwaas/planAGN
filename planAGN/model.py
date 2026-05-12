@@ -1,0 +1,498 @@
+"""
+AGN natural mass range atmospheric-impact model
+
+This script computes and plots a set of diagnostics for planetary atmospheres exposed to AGN winds across a span of supermassive black hole (SMBH) masses, radiative efficiencies, and wind speeds.
+
+Original author: Alessandra Ambrifi
+Revisions: Jourdan Waas, Jackson Kernan, Emily Lohmann
+
+Finalized: March 24, 2025
+"""
+
+## import packages
+
+from pathlib import Path
+
+from astropy.constants import G as G_const
+from astropy.constants import M_earth, M_sun, k_B, m_p
+from astropy.constants import c as c_const
+import astropy.units as u
+import matplotlib.pyplot as plt
+import numpy as np
+
+## define physical constants and standard conversions
+
+c = c_const.value                  # speed of light [m/s]
+G = G_const.value                  # gravitational constant [m^3 / (kg s^2)]
+kb = k_B.value                     # Boltzmann constant [J/K]
+mp = m_p.value                     # proton mass [kg]
+m_Earth = M_earth.value            # Earth mass [kg]
+SolarMass = M_sun.value            # solar mass [kg]
+
+yr_in_secs = (365.256 * u.day).to(u.s).value  # sidereal year [s]
+pc_to_m = (1 * u.pc).to(u.m).value            # parsec to meter [m]
+
+## planetary and molecular parameters
+
+R_Earth = 6_371_000         # Earth and Jupiter radii [m]
+R_Jupiter = 69_911_000      # Jupiter radius [m]
+Rp = [R_Earth, R_Jupiter]   # Earth and Jup. radii (SI)
+rho_earth_like = 5.5e3      # Earth density [kg m^-3]
+ma_earth = 5.1e18           # Earth atmospheric mass [kg]
+mm_mars_atm = 2.5e16        # Mars atmospheric mass [kg] (unused currently)
+m_h2 = 2.02 * m_p.value     # molecular hydrogen mass [kg]
+m_wat = 18.01 * m_p.value   # water molecule mass [kg]
+m_n2 = 28.01 * m_p.value    # molecular nitrogen mass [kg]
+mpart = [m_n2, m_h2]        # list used for computing thermal velocities
+T0 = 273.15                 # base temperature assumption [K]
+Cp = [1320, 18300, 4444]    # specific heats (N2, H2, H2O) [J kg^-1 K^-1]
+
+## plotting colors
+
+colors = ["coral", "deeppink", "forestgreen", "dodgerblue", "darkblue", "darkorchid"]
+
+# folder where to save plots: Use `Path(__file__)` to get path of this source file,
+# use `parent` to get which folder it's in, `parent` again to get the outer folder,
+# then go to the reports/figures folder
+plot_dir = Path(__file__).parent.parent.resolve() / "reports" / "figures"
+
+# create a specific output folder for the natural mass range plots
+mass_dir = plot_dir / "natural mass range"
+
+# make sure it exists
+
+mass_dir.mkdir(parents=True, exist_ok=True)
+
+## parameter grids
+
+# SMBH mass range (in M_sun)
+bhm_grid = np.logspace(6, 10, 100)  # 1e6 -> 1e10 M_sun
+
+# radiative efficiency grid (eta)
+Eta = np.linspace(0.01, 0.5, num=10)  # radiative efficiency (dimensionless)
+
+# outflow speed grid (vel)
+vel = np.linspace(0.01 * c, 0.1 * c, num=10)  # typical UFO speeds range
+
+## 3D matrix of combinations
+
+
+def make_parameter_matrix(bhm: np.ndarray, eta: np.ndarray, vels: np.ndarray):
+    """return a nested-list structure containing [bhm, eta, vel] triples."""
+    return [[[[b, e, v] for b in bhm] for e in eta] for v in vels]
+
+
+data_matrix = make_parameter_matrix(bhm_grid, Eta, vel)
+
+
+def varselect(j: int, k: int, l: int):
+    """select (bhm, eta, vel) triple from the nested data_matrix.
+
+    parameters:
+        j (int): mass index
+        k (int): eta index
+        l (int): vel index
+
+    returns:
+        list: [bhm, eta, vel]
+    """
+    return data_matrix[int(l)][int(k)][int(j)]
+
+
+def rangecreation(
+    start_mass_idx: int, start_eta_idx: int, vel_idx: int, n_eta_out: int, n_mass_out: int
+):
+    """create a list of parameter triples by iterating in mass and eta indices."""
+    data_points = []
+    for i in range(n_eta_out):
+        for x in range(n_mass_out):
+            variables = varselect(start_mass_idx + x, start_eta_idx + i, vel_idx)
+            data_points.append(variables)
+    return data_points
+
+
+# example stored values
+stored_vals = rangecreation(0, 0, 0, 1, 100)
+
+# derived SMBH-dependent quantities
+# ---------------------------
+M_list = []             # SMBH mass in kg
+Ledd_list = []          # Eddington luminosity [W]
+r_sch_list = []         # Schwarzschild radius [m]
+t_salp_list = []        # Salpeter times [s]
+t_salp_yr_list = []     # Salpeter times [yr]
+bh_m_plot = []          # BH mass in M_sun for plotting
+
+for n, sv in enumerate(stored_vals):
+    bhm = sv[0]  # BH mass in solar masses (M_sun)
+    eta = sv[1]  # radiative efficiency (dimensionless)
+    # Eddington luminosity: L_Edd ≈ 1.26e31 W per M_sun
+    Ledd = bhm * 1.26e31
+    Ledd_list.append(Ledd)
+
+    M_kg = bhm * SolarMass
+    M_list.append(M_kg)
+
+    r_sch = 2 * G * M_kg / c**2  # Schwarzschild radius
+    r_sch_list.append(r_sch)
+
+    # Salpeter timescale, Equation 2 (Waas et al. 2025)
+    t_salp = (M_kg * eta * c**2) / ((1 - eta) * Ledd)
+    t_salp_list.append(t_salp)
+    t_salp_yr_list.append(t_salp / yr_in_secs)
+
+    bh_m_plot.append(bhm)
+
+# numpy array versions of previous lists (for "vectorized" computations)
+
+M_arr = np.array(M_list)                    # SMBH mass in kg
+Ledd_arr = np.array(Ledd_list)              # Eddington luminosity [W]
+r_sch_arr = np.array(r_sch_list)            # Schwarzschild radius [m]
+t_salp_arr = np.array(t_salp_list)          # Salpeter times [s]
+t_salp_yr_arr = np.array(t_salp_yr_list)    # Salpeter times [yr]
+
+# ---------------------------
+# typical UFOs and warm absorbers speeds
+# ---------------------------
+v_out = [1e5, 1e6]  # typical speeds [km s^-1] (Z. Igo et al. 2020)
+
+# ---------------------------
+# Ozone-depletion calculation (per Salpeter time)
+# ---------------------------
+# define coefficients of the quadratic
+a = 1
+b = 10
+
+R0 = 9e14  # rate at which the ambient flux of cosmic rays (CRs) generates NO [molecules cm^-2 yr^-1] (Ambrifi et al. 2022)
+phi0 = 9e4  # energy flux carried by background CRs [erg cm^-2 yr^-1] (Ambrifi et al. 2022)
+y0 = 3  # unperturbed stratospheric NO abundances [ppb] (Ambrifi et al. 2022)
+sigmastrat = 5e23  # stratospheric column density [molecules cm^-2] (Ambrifi et al. 2022)
+
+
+def Oz_dep(x_pc: float, outflow_type_index: int) -> np.ndarray:
+    """
+    ozone depletion fraction after one Salpeter time, as function of SMBH mass.
+
+    parameters:
+        x_pc (float): distance from SMBH in parsecs
+        outflow_type_index (int): 0 => energy-driven (0.05 Ledd),
+                                  1 => momentum-driven (0.001 Ledd)
+
+    returns:
+        y (np.ndarray): ozone depletion fraction array (same length as stored_vals)
+    """
+    # assign power fraction depending on outflow type
+    if outflow_type_index == 0:
+        power_frac = 0.05  # energy-driven case (equation 4, Waas et al. 2025)
+    else:
+        power_frac = 0.001  # momentum-driven case (equation 5, Waas et al. 2025)
+
+    # x is passed in parsecs; convert to meters where necessary
+
+    power = power_frac * Ledd_arr
+
+    # energy flux attributed to AGN wind particles [erg cm^-2 yr^-1] (equation 30, Ambrifi et al. 2022)
+    # the extra numerical factors are converting x_pc to cm and the (1e7 / 3.17e-8) converts to erg/yr
+    flux = power / (16 * np.pi * (x_pc * 3.086e18) ** 2) * (1e7 / (3.17e-8))
+
+    # cdisc is the constant term (c in quadratic formula) given by equation 27, Ambrifi et al. 2022)
+    cdisc = -(R0 * flux / phi0) * ((10 + y0) * t_salp_yr_arr * 1e9 / sigmastrat)
+
+    n = len(stored_vals)
+    y1 = np.zeros(n)
+    for w in range(n):
+        # solve discriminant using the quadratic formula
+        disc = b**2 - (4 * a * cdisc[w])
+        # Numerical safeguard: ensure discriminant non-negative (set negative to 0)
+        if disc < 0:
+            disc = 0
+        y1[w] = (-b + np.sqrt(disc)) / (2 * a)
+
+    # ratio of perturbed and unperturbed NO abundances (equation 29, Ambrifi et al. 2022)
+    d_x = (y0 + y1) / y0
+
+    # ratio of stratospheric ozone abundance (equation 28, Ambrifi et al. 2022)
+    F_d = (np.sqrt(16 + 9 * d_x**2) - 3 * d_x) / 2
+
+    # fractional ozone depletion (D) (equation 23, Waas et al. 2025)
+    y = 1 - F_d
+
+    return y
+
+
+# ---------------------------
+# time required for 90% ozone depletion
+# ---------------------------
+
+k = (R0 / phi0) * (1e9 * (10 + y0) / sigmastrat)  # defined as the constant in equation 17, Waas et al. 2025
+
+
+def deltaT(x_pc: float, outflow_type_index: int) -> np.ndarray:
+    """
+    time (years) required for 90% ozone depletion, as a function of BH mass.
+    """
+    power_scale = 0.05 if outflow_type_index == 0 else 0.001
+    power = power_scale * Ledd_arr
+    flux = power / (16 * np.pi * (x_pc * 3.086e18) ** 2) * (1e7 / (3.17e-8))
+
+    # generalized time interval for D = 0.9 or 90% ozone depletion [yr] (equation 25, Waas et al. 2025)
+    time_dep = 1739 / (k * flux)
+
+    return time_dep
+
+
+# ---------------------------
+# heating: atmospheric temperature increase after Salpeter time
+# ---------------------------
+def Tnew(x_pc: float, composition_index: int, kinpow_index: int) -> np.ndarray:
+    """
+    compute Delta T (K) added to the atmosphere by deposited kinetic power
+    over a Salpeter time.
+
+    parameters:
+        x_pc: distance in parsec
+        composition_index: 0 -> N2, 1 -> H2, 2 -> H2O
+        kinpow_index: 0 -> 5% Ledd (energy-driven), 1 -> 0.1% Ledd (momentum)
+
+    returns:
+        y: array of Delta T [K] for each SMBH mass in stored_vals
+    """
+    # fraction of Ledd converted to wind kinetic power
+    if kinpow_index == 0:
+        kinpow = 0.05
+    elif kinpow_index == 1:
+        kinpow = 0.001
+
+    specific_heat = Cp[composition_index]
+
+    # upper bound of atmospheric temperature increase [K] (equation 16, Ambrifi et al. 2022)
+    y = (1 / (4 * ma_earth * specific_heat)
+        * kinpow * Ledd_arr * t_salp_arr
+        * (Rp[0] / (x_pc * pc_to_m)) ** 2)
+    return y
+
+
+# ---------------------------
+# most probable velocity (thermal) after heating
+# ---------------------------
+def Vmp(x_pc: float, composition_index: int, kinpow_index: int) -> np.ndarray:
+    """
+    Most probable molecular speed after atmosphere is heated by Delta T.
+    Returns speeds in m/s (same units as sqrt).
+    """
+    m = mpart[composition_index]
+
+    deltaT_vals = Tnew(x_pc, composition_index, kinpow_index)
+
+    y = np.sqrt(2 * kb * (T0 + deltaT_vals) / m)  # [m s^-1] (equation 17, Ambrifi et al. 2022)
+    return y
+
+
+# escape velocity for "Earth-like" surface used for plotting
+v_esc = 11.2 * np.ones_like(bh_m_plot)  # 11.2 km/s
+
+
+# ---------------------------
+# mass loss computations (energy and momentum driven)
+# ---------------------------
+def mass_lost_energy(x_pc: float) -> np.ndarray:
+    """
+    mass lost from an atmosphere due to energy-driven outflow interaction.
+    """
+
+    # atmospheric mass loss [kg] with power replaced by energy-driven power equation (equation 20, Ambrifi et al. 2022)
+    M_lostE = (3 / (16 * np.pi * G * rho_earth_like)) * (0.05 * Ledd_arr * t_salp_arr / (x_pc * pc_to_m) ** 2)
+    return M_lostE
+
+
+def mass_lost_momentum(x_pc: float) -> np.ndarray:
+    """
+    mass lost from an atmosphere due to momentum-driven outflow.
+    """
+    # atmospheric mass loss [kg] with power replaced by momentum-driven power equation (equation 20, Ambrifi et al. 2022)
+    M_lostM = (3 / (8 * np.pi * G * rho_earth_like)) * (0.001 * Ledd_arr * t_salp_arr / (x_pc * pc_to_m) ** 2)
+    return M_lostM
+
+
+# plot ozone depletion
+
+def plot_ozone_depletion(x_list):
+    # energy-driven (index 0)
+    plot_driven_ozone_depletion(x_list, driver_index=0, legend_title="Energy-Driven")
+    # momentum-driven (index 1)
+    plot_driven_ozone_depletion(x_list, driver_index=1, legend_title="Momentum-Driven")
+
+def plot_driven_ozone_depletion(x_list, driver_index, legend_title):
+    # energy-driven (index 0)
+    fig, ax = plt.subplots(figsize=(7, 5))
+    for i, x_pc in enumerate(x_list):
+        plt.plot(
+            bh_m_plot,
+            Oz_dep(x_pc, driver_index) * 100,
+            colors[i],
+            linestyle="-",
+            label=f"R:{x_pc / 100:.0f} kpc",
+        )
+    plt.xlabel(r"Black Hole Mass [$M_{\odot}$]", fontsize=14)
+    plt.ylabel("Ozone depletion D [%]", fontsize=14)
+    plt.xscale("log")
+    plt.legend(title=legend_title, prop={"size": 10})
+    plt.tight_layout()
+    filename = f"Ozone Depletion {legend_title}.png"
+    fig.savefig(mass_dir / filename)
+
+
+# plot timescale for 90% depletion
+
+def plot_deltaT_90pct(x_list):
+
+    plot_driven_deltaT_90pct(x_list, driver_index=0, legend_title="Energy-Driven")
+    plot_driven_deltaT_90pct(x_list, driver_index=1, legend_title="Momentum-Driven")
+
+def plot_driven_deltaT_90pct(x_list, driver_index, legend_title):
+    fig, ax = plt.subplots(figsize=(7, 5))
+    for i, x_pc in enumerate(x_list):
+        plt.plot(
+            bh_m_plot,
+            deltaT(x_pc, driver_index),
+            colors[i],
+            linestyle="-",
+            label=f"R:{x_pc / 100:.0f} kpc",
+        )
+    plt.xlabel(r"Black Hole Mass [$M_{\odot}$]", fontsize=14)
+    plt.ylabel(r"$\Delta t$ [yr]", fontsize=14)
+    plt.xscale("log")
+    plt.yscale("log")
+    plt.legend(title=legend_title, prop={"size": 10})
+    plt.tight_layout()
+    filename = f"Timescale 90 Percent {legend_title}.png"
+    fig.savefig(mass_dir / filename)
+
+
+# plot heating and most probable velocities
+
+def plot_heating_and_velocities(x_list):
+    plot_heating(x_list)
+    plot_most_probable_velocities(x_list)
+
+def plot_heating(x_list):
+    # energy-driven heating
+    plot_driven_heating(x_list, driver_index=0, legend_title="Energy-Driven")
+
+    # momentum-driven heating
+    plot_driven_heating(x_list, driver_index=1, legend_title="Momentum-Driven")
+
+def plot_most_probable_velocities(x_list):
+    # energy-driven most probable velocities
+    plot_driven_most_probable_velocities(x_list, driver_index=0, legend_title="Energy-Driven")
+    # momentum-driven most probable velocities
+    plot_driven_most_probable_velocities(x_list, driver_index=1, legend_title="Momentum-Driven")
+
+def plot_driven_heating(x_list, driver_index, legend_title):
+    fig, ax = plt.subplots(figsize=(7, 5))
+    for i, x_pc in enumerate(x_list):
+        plt.plot(
+            bh_m_plot,
+            Tnew(x_pc, 0, driver_index),
+            colors[i],
+            linestyle="-",
+            label=f"R:{x_pc / 100:.0f} kpc - $N_2$",
+        )
+        plt.plot(
+            bh_m_plot,
+            Tnew(x_pc, 1, driver_index),
+            colors[i],
+            linewidth=1.7,
+            linestyle="--",
+            label=f"R:{x_pc / 100:.0f} kpc - $H_2$",
+        )
+    plt.xlabel(r"Black Hole Mass [$M_{\odot}$]", fontsize=14)
+    plt.ylabel(r"$\Delta T$ [K]", fontsize=14)
+    plt.xscale("log")
+    plt.yscale("log")
+    plt.legend(title=legend_title, prop={"size": 9})
+    plt.tight_layout()
+    filename = f"Heating {legend_title}.png"
+    fig.savefig(mass_dir / filename)
+
+
+def plot_driven_most_probable_velocities(x_list, driver_index, legend_title):
+    fig, ax = plt.subplots(figsize=(7, 5))
+    # plot escape velocity (converted to km/s)
+    plt.plot(
+        bh_m_plot,
+        v_esc,
+        "firebrick",
+        linestyle=":",
+        linewidth=3,
+        alpha=0.9,
+        label=r"$v_{\text{esc}} = 11.2~\mathrm{km\,s^{-1}}$",
+    )
+    for i, x_pc in enumerate(x_list):
+        plt.plot(
+            bh_m_plot,
+            Vmp(x_pc, 0, driver_index) / 1000,
+            colors[i],
+            linestyle="-",
+            label=f"R:{x_pc / 100:.0f} kpc - $N_2$",
+        )
+        plt.plot(
+            bh_m_plot,
+            Vmp(x_pc, 1, driver_index) / 1000,
+            colors[i],
+            linewidth=1.7,
+            linestyle="--",
+            label=f"R:{x_pc / 100:.0f} kpc - $H_2$",
+        )
+    plt.xlabel(r"Black Hole Mass [$M_{\odot}$]", fontsize=14)
+    plt.ylabel(r"$v_{\mathrm{mp}}$ [km s$^{-1}$]", fontsize=14)
+    plt.xscale("log")
+    plt.yscale("log")
+    plt.legend(title=legend_title, prop={"size": 9})
+    plt.tight_layout()
+    filename = f"Probable Velocity {legend_title}.png"
+    fig.savefig(mass_dir / filename)
+
+
+# plot mass loss
+
+def plot_mass_loss(x_list):
+    plot_driven_mass_loss(x_list, driver=mass_lost_energy, legend_title="Energy-Driven")
+    plot_driven_mass_loss(x_list, driver=mass_lost_momentum, legend_title="Momentum-Driven")
+
+
+def plot_driven_mass_loss(x_list, driver, legend_title):
+    fig, ax = plt.subplots(figsize=(7, 5))
+    for n, x_pc in enumerate(x_list):
+        plt.plot(
+            bh_m_plot,
+            driver(x_pc) / ma_earth,
+            colors[n],
+            linewidth=1.7,
+            linestyle="-",
+            label=f"R:{x_pc / 100:.0f} kpc",
+        )
+    plt.xlabel(r"Black Hole Mass [$M_{\odot}$]", fontsize=14)
+    plt.ylabel(r"$M_{\mathrm{lost}}/M_{\mathrm{atm,\oplus}}$", fontsize=14)
+    plt.xscale("log")
+    plt.yscale("log")
+    plt.legend(title=legend_title, prop={"size": 9})
+    plt.tight_layout()
+    filename = f"Mass Loss {legend_title}.png"
+    fig.savefig(mass_dir / filename)
+
+
+# ---------------------------
+# convenience main
+# ---------------------------
+def main():
+    """run all plotting functions"""
+    x_list = [100., 800., 5000., 10000., 15000.]
+    plot_ozone_depletion(x_list)
+    plot_deltaT_90pct(x_list)
+    plot_heating_and_velocities(x_list)
+    plot_mass_loss(x_list)
+
+
+if __name__ == "__main__":
+    main()
