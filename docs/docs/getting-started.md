@@ -14,7 +14,7 @@ The specifications of the diagnostics can be found in the [output](output.md) se
 ### Requirements
 
 - Python: 3.10+
-- Package manager: uv
+- Package manager: [uv](https://docs.astral.sh/uv)
 
 ---
 
@@ -24,9 +24,6 @@ Follow the official instructions:
 
 → <https://docs.astral.sh/uv/>
 
-!!! note
-    All dependencies (e.g.,  `astropy`, `matplotlib`, `numpy`) are automatically installed by `uv` from the `uv.lock` file.
-
 ---
 
 ### Clone the Repository
@@ -35,12 +32,15 @@ Follow the official instructions:
 git clone https://github.com/jourdanwaas/planAGN
 ```
 
-```sh
-cd planAGN
-```
+### Set Up the Environment
 
-### Sync Dependencies
+In the `planAGN` directory, run the following line to sync dependencies:
 
 ```sh
 uv sync
 ```
+
+!!! note
+    All dependencies (e.g.,  `astropy`, `matplotlib`, `numpy`) are automatically installed by `uv` from the `uv.lock` file.
+
+This can also be used to run the code again in a fresh environment.
