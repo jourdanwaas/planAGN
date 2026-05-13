@@ -30,7 +30,7 @@ nav:
       - Running the Models: running.md
       - Outputs: output.md
 
-  - References: ref.md
+  - References and Acknowledgments: ref.md
   - Troubleshooting and Known Issues: issues.md
 
 markdown_extensions:
