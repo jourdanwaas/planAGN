@@ -3,43 +3,6 @@ revision = 3
 requires-python = "==3.10.*"
 
 [[package]]
-name = "planAGN"
-version = "0.0.1"
-source = { editable = "." }
-dependencies = [
-    { name = "astropy" },
-    { name = "ipython" },
-    { name = "jupyterlab" },
-    { name = "matplotlib" },
-    { name = "mkdocs" },
-    { name = "mkdocs-material" },
-    { name = "notebook" },
-    { name = "numpy" },
-    { name = "pip" },
-    { name = "pytest" },
-    { name = "python-dotenv" },
-    { name = "ruff" },
-    { name = "typos" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "astropy", specifier = ">=6.1.7" },
-    { name = "ipython" },
-    { name = "jupyterlab" },
-    { name = "matplotlib" },
-    { name = "mkdocs" },
-    { name = "mkdocs-material", specifier = ">=9.7.1" },
-    { name = "notebook" },
-    { name = "numpy" },
-    { name = "pip" },
-    { name = "pytest" },
-    { name = "python-dotenv" },
-    { name = "ruff" },
-    { name = "typos", specifier = ">=1.42.3" },
-]
-
-[[package]]
 name = "anyio"
 version = "4.12.1"
 source = { registry = "https://pypi.org/simple" }
