@@ -25,6 +25,7 @@ dependencies = [
     "notebook",
     "numpy",
     "pip",
+    "pymdown-extensions>=10.20.1",
     "pytest",
     "python-dotenv",
     "ruff",
