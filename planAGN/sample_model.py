@@ -358,25 +358,34 @@ def run_model(name, M_bh, save_plots=True):
 
     ## distances where the energy-limited hydrodynamic-like atm escape is significant
 
-    # find the index where the difference between M_lostE/ma and 1 changes sign
-    diff_M_lostE = M_lostE / ma - 1
-    idx_intersect_M_lostE = np.where(np.diff(np.sign(diff_M_lostE)))[0][0]
-
-    # find the index where the difference between M_lostM/ma and 1 changes sign
-    diff_M_lostM = M_lostM / ma - 1
-    idx_intersect_M_lostM = np.where(np.diff(np.sign(diff_M_lostM)))[0][0]
+    # find the index where the difference between M_lost/ma and 1 changes sign
+    def find_mass_intersection(x, y):
+        diff = y - 1
+        idx = np.where(np.diff(np.sign(diff)))[0]
+        return idx[0] if idx.size > 0 else None
 
     # get the R values at these intersection indices
-    r_intersect_M_lostE = x[idx_intersect_M_lostE]
-    r_intersect_M_lostM = x[idx_intersect_M_lostM]
+    idx_E = find_mass_intersection(x, M_lostE / ma)
+    idx_M = find_mass_intersection(x, M_lostM / ma)
+
+    r_intersect_M_lostE = x[idx_E] if idx_E is not None else None
+    r_intersect_M_lostM = x[idx_M] if idx_M is not None else None
 
     # append mass-loss results to text file
     with open(output_file, "a", encoding="utf-8") as f:
         f.write(
             "### Distance where M_lost/M_atm intersect 1 (energy-limited hydrodynamic-like atm escape) ###\n"
         )
-        f.write(f"For energy-driven: R = {r_intersect_M_lostE / 1000:.2f} kpc\n")
-        f.write(f"For momentum-driven: R = {r_intersect_M_lostM / 1000:.2f} kpc\n\n")
+
+        if r_intersect_M_lostE is not None:
+            f.write(f"For energy-driven: R = {r_intersect_M_lostE / 1000:.2f} kpc\n")
+        else:
+            f.write("For energy-driven: R = N/A\n")
+
+        if r_intersect_M_lostM is not None:
+            f.write(f"For momentum-driven: R = {r_intersect_M_lostM / 1000:.2f} kpc\n\n")
+        else:
+            f.write("For momentum-driven: R = N/A\n\n")
 
     ## dependence of ozone depletion on radial distance
 
