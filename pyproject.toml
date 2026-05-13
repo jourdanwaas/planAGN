@@ -3,7 +3,7 @@ requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "agn_habitability"
+name = "planAGN"
 version = "0.0.1"
 description = "This script computes and plots a set of diagnostics for planetary atmospheres exposed to AGN winds across a span of supermassive black hole (SMBH) masses, radiative efficiencies, and wind speeds."
 authors = [
@@ -35,12 +35,12 @@ requires-python = "~=3.10.0"
 
 [tool.ruff]
 line-length = 99
-src = ["agn_habitability"]
-include = ["pyproject.toml", "agn_habitability/**/*.py"]
+src = ["planAGN"]
+include = ["pyproject.toml", "planAGN/**/*.py"]
 
 [tool.ruff.lint]
 extend-select = ["I"]  # Add import sorting
 
 [tool.ruff.lint.isort]
-known-first-party = ["agn_habitability"]
+known-first-party = ["planAGN"]
 force-sort-within-sections = true
