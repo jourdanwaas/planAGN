@@ -32,6 +32,8 @@ Follow the official instructions:
 git clone https://github.com/jourdanwaas/planAGN
 ```
 
+---
+
 ### Set Up the Environment
 
 In the `planAGN` directory, run the following line to sync dependencies:
@@ -40,7 +42,7 @@ In the `planAGN` directory, run the following line to sync dependencies:
 uv sync
 ```
 
+This can also be used to run the code again in a fresh environment.
+
 !!! note
     All dependencies (e.g.,  `astropy`, `matplotlib`, `numpy`) are automatically installed by `uv` from the `uv.lock` file.
-
-This can also be used to run the code again in a fresh environment.
