@@ -1,4 +1,4 @@
-# planAGN
+# planAGN (*planets near AGN*)
 
 A computational framework for modeling the impact of AGN-driven outflows on planetary atmospheres.
 
