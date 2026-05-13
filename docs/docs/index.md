@@ -37,12 +37,6 @@ This project builds on contributions from:
 
 Francesco Tombesi, Amedeo Balbi, Alessandra Ambrifi, Emily Lohmann, Eric Perlman, Manasvi Lingam, Jackson Kernan, and Abhro Rahman.
 
----
-
-## Documentation
-
-- [Getting Started](getting-started.md)
-
 
 
 
