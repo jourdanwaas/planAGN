@@ -53,7 +53,7 @@ Galaxy Name
 BH Mass
 
 - Units: Solar masses (M<sub>☉</sub>)
-- Typical range: 1e6 - 1e10 M<sub>☉</sub>
+- Typical range: $1 \times 10^6 -1 \times 10^{10} M_{\odot}$
 
 Save Option
 
@@ -68,7 +68,7 @@ Enter black hole mass [M_sun]: 2.8e8
 Save plots? (y/n): y
 ```
 
-This script will generate and locally save results for the radio galaxy 3C 390.3, which contains a central SMBH with a mass of 2.8 × 10^8 M<sub>☉</sub>.
+This script will generate and locally save results for the radio galaxy 3C 390.3, which contains a central SMBH with a mass of $2.8 \times 10^8 M_{\odot}$.
 
 !!! note
     The code will produce a compatible file name for the object, therefore inputting a space into the interactive prompt is acceptable.
