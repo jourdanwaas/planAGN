@@ -1,4 +1,4 @@
-# planAGN (*planets near AGN*)
+# planAGN: *planets near AGN*
 
 A computational framework for modeling the impact of AGN-driven outflows on planetary atmospheres.
 
@@ -27,7 +27,7 @@ A computational framework for modeling the impact of AGN-driven outflows on plan
 
 ## Associated Publication
 
-[The Impact of Supermassive Black Holes on Exoplanet Habitability. I. Spanning the Natural Mass Range.](https://iopscience.iop.org/article/10.3847/1538-4357/ae5e6f)
+[Waas, Jourdan, et al. "The Impact of Supermassive Black Holes on Exoplanet Habitability. I. Spanning the Natural Mass Range" *The Astrophysical Journal* 1003. 1 (2026): 35](https://iopscience.iop.org/article/10.3847/1538-4357/ae5e6f)
 
 ---
 
