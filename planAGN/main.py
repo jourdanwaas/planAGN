@@ -1,5 +1,5 @@
 def main():
-    print("Hello from agn-habitability!")
+    print("Hello from planAGN!")
 
 
 if __name__ == "__main__":
