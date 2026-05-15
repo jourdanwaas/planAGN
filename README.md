@@ -18,7 +18,7 @@ This model computes and plots a set of diagnostics for planetary atmospheres exp
 │
 ├── docs/              ← Project documentation using mkdocs; see www.mkdocs.org for details
 │
-├── notebooks/         ← Jupyter notebooks. 
+├── notebooks/         ← Jupyter notebooks (coming soon). 
 │
 ├── reports/           ← Generated outputs from scripts
 │   ├── figures/       ← Generated graphics and figures as .png files
