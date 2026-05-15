@@ -4,16 +4,16 @@
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-This script computes and plots a set of diagnostics for planetary atmospheres exposed to AGN winds across a span of supermassive black hole (SMBH) masses, radiative efficiencies, and wind speeds.
+This model computes and plots a set of diagnostics for planetary atmospheres exposed to AGN winds across a span of supermassive black hole (SMBH) masses and at various distances from the central SMBH.
 
 ## Project Organization
 
 ```
 ├── LICENSE            ← Open-source license (MIT)
-├── Makefile           ← Makefile with convenience commands like `make data` or `make train`
+├── Makefile           ← Makefile
 ├── README.md          ← The top-level README for developers using this project.
 ├── pyproject.toml     ← Project configuration file with package metadata for
-│                        agn_habitability and configuration for tools like black
+│                        planAGN
 ├── uv.lock            ← Lock file specifying dependencies for uv to use
 │
 ├── docs/              ← Project documentation using mkdocs; see www.mkdocs.org for details
@@ -26,7 +26,7 @@ This script computes and plots a set of diagnostics for planetary atmospheres ex
 │
 └── planAGN/  ← Source code for use in this project.
     ├── __init__.py             ← Makes planAGN a Python module
-    ├── main.py                 ← Stub for script code
+    ├── main.py                 ← Stub for script code (currently can be used as a test)
     ├── model.py                ← Script to create plots across the natural range of black hole masses
     └── sample_model.py         ← Script to create plots and reports for any user-input black hole mass
 ```
