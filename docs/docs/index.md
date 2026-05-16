@@ -1,6 +1,6 @@
 # planAGN: *planets near AGN*
 
-A computational framework for modeling the impact of AGN-driven outflows on planetary atmospheres.
+[planAGN](https://github.com/jourdanwaas/planAGN) is a computational framework for modeling the impact of AGN-driven outflows on planetary atmospheres.
 
 <br>
 
