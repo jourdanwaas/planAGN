@@ -33,4 +33,4 @@ This model computes and plots a set of diagnostics for planetary atmospheres exp
 
 For documentation, please see the docs at:
 
-[(https://jourdanwaas.github.io/planAGN/)](https://jourdanwaas.github.io/planAGN/)
+[https://jourdanwaas.github.io/planAGN/](https://jourdanwaas.github.io/planAGN/)
