@@ -53,7 +53,7 @@ Galaxy Name
 BH Mass
 
 - Units: Solar masses (M<sub>☉</sub>)
-- Typical range: $1 \times 10^6 -1 \times 10^{10} M_{\odot}$
+- Typical range: $10^6 - 10^{10} M_{\odot}$
 
 Save Option
 
