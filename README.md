@@ -12,13 +12,12 @@ This model computes and plots a set of diagnostics for planetary atmospheres exp
 ├── LICENSE            ← Open-source license (MIT)
 ├── Makefile           ← Makefile
 ├── README.md          ← The top-level README for developers using this project.
-├── pyproject.toml     ← Project configuration file with package metadata for
-│                        planAGN
+├── pyproject.toml     ← Project configuration file with package metadata for planAGN
 ├── uv.lock            ← Lock file specifying dependencies for uv to use
 │
 ├── docs/              ← Project documentation using mkdocs; see www.mkdocs.org for details
 │
-├── notebooks/         ← Jupyter notebooks (coming soon). 
+├── notebooks/         ← Jupyter notebooks (coming soon).
 │
 ├── reports/           ← Generated outputs from scripts
 │   ├── figures/       ← Generated graphics and figures as .png files

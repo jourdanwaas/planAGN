@@ -18,10 +18,10 @@
 
 [planAGN](https://github.com/jourdanwaas/planAGN) models how AGN-driven outflows deposit energy into planetary atmospheres, altering:
 
-- Atmospheric heating  
-- Molecular velocity distributions  
-- Atmospheric escape  
-- Ozone depletion  
+- Atmospheric heating
+- Molecular velocity distributions
+- Atmospheric escape
+- Ozone depletion
 
 ---
 
@@ -35,9 +35,4 @@
 
 This project builds on contributions from:
 
-Francesco Tombesi, Amedeo Balbi, Alessandra Ambrifi, Emily Lohmann, Eric Perlman, Manasvi Lingam, Jackson Kernan, and Abhro Rahman. 
-
-
-
-
-
+Francesco Tombesi, Amedeo Balbi, Alessandra Ambrifi, Emily Lohmann, Eric Perlman, Manasvi Lingam, Jackson Kernan, and Abhro Rahman.
