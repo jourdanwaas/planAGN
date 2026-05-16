@@ -35,7 +35,7 @@ A computational framework for modeling the impact of AGN-driven outflows on plan
 
 This project builds on contributions from:
 
-Francesco Tombesi, Amedeo Balbi, Alessandra Ambrifi, Emily Lohmann, Eric Perlman, Manasvi Lingam, Jackson Kernan, and Abhro Rahman.
+Francesco Tombesi, Amedeo Balbi, Alessandra Ambrifi, Emily Lohmann, Eric Perlman, Manasvi Lingam, Jackson Kernan, and Abhro Rahman. 
 
 
 
