@@ -1,8 +1,8 @@
 # planAGN
 
-<a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
-    <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
-</a>
+Project template: [![cookiecutter badge](https://img.shields.io/badge/CCDS-328F97?logo=cookiecutter)](https://cookiecutter-data-science.drivendata.org/)
+
+Documentation: [![docs badge](https://img.shields.io/badge/docs-blue.svg)](https://jourdanwaas.github.io/planAGN)
 
 This model computes and plots a set of diagnostics for planetary atmospheres exposed to AGN winds across a span of supermassive black hole (SMBH) masses and at various distances from the central SMBH.
 
@@ -29,7 +29,3 @@ This model computes and plots a set of diagnostics for planetary atmospheres exp
     ├── model.py                ← Script to create plots across the natural range of black hole masses
     └── sample_model.py         ← Script to create plots and reports for any user-input black hole mass
 ```
-
-For documentation, please see the docs at:
-
-[https://jourdanwaas.github.io/planAGN/](https://jourdanwaas.github.io/planAGN/)
