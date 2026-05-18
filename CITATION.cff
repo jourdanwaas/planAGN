@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+title: planAGN
+message: If you use this software, please cite it using the metadata from this file.
+type: software
+license: MIT
+authors:
+  - given-names: Jourdan
+    family-names: Waas
+    email: waasj2019@my.fit.edu
+    affiliation: Florida Institute of Technology
+    orcid: 'https://orcid.org/0009-0008-3084-3769'
+repository-code: 'https://github.com/jourdanwaas/planAGN'
+url: 'https://jourdanwaas.github.io/planAGN'
+abstract: This model computes and plots a set of diagnostics for planetary atmospheres exposed to AGN winds across a span of supermassive black hole (SMBH) masses and at various distances from the central SMBH.
+keywords:
+  - AGN
+  - Habitability
+  - Astrophysics
+
+preferred-citation:
+  type: article
+  title: 'The Impact of Supermassive Black Holes on Exoplanet Habitability. I. Spanning the Natural Mass Range'
+  authors:
+    - given-names: Jourdan
+      family-names: Waas
+    - given-names: Eric S.
+      family-names: Perlman
+    - given-names: Manasvi
+      family-names: Lingam
+    - given-names: Emily
+      family-names: Lohmann
+    - given-names: Jackson
+      family-names: Kernan
+    - given-names: Francesco
+      family-names: Tombesi
+    - given-names: Amedeo
+      family-names: Balbi
+    - given-names: Alessandra
+      family-names: Ambrifi
+  year: '2026'
+  doi: '10.3847/1538-4357/ae5e6f'
