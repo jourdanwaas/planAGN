@@ -1,6 +1,8 @@
 # planAGN
 
-[![cookiecutter badge](https://img.shields.io/badge/CCDS-328F97?logo=cookiecutter)](https://cookiecutter-data-science.drivendata.org/) [![docs badge](https://img.shields.io/badge/docs-blue.svg)](https://jourdanwaas.github.io/planAGN) [![DOI](https://zenodo.org/badge/1129314961.svg)](https://doi.org/10.5281/zenodo.20561197)
+[![DOI](https://zenodo.org/badge/1129314961.svg)](https://doi.org/10.5281/zenodo.20561197)
+[![docs badge](https://img.shields.io/badge/docs-blue.svg)](https://jourdanwaas.github.io/planAGN)
+[![cookiecutter badge](https://img.shields.io/badge/CCDS-328F97?logo=cookiecutter)](https://cookiecutter-data-science.drivendata.org/)
 
 This model computes and plots a set of diagnostics for planetary atmospheres exposed to AGN winds across a span of supermassive black hole (SMBH) masses and at various distances from the central SMBH.
 
