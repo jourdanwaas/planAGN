@@ -17,6 +17,10 @@ authors:
 repository-code: https://github.com/jourdanwaas/planAGN
 url: https://jourdanwaas.github.io/planAGN
 
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.20561198
+
 abstract: >
   planAGN is an open-source Python framework for modeling the effects of
   active galactic nuclei (AGN) driven outflows on Earth-like planetary
