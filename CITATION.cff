@@ -2,20 +2,36 @@ cff-version: 1.2.0
 title: planAGN
 message: If you use this software, please cite it using the metadata from this file.
 type: software
+
+version: 1.0.0
+date-released: 2026-06-05
+
 license: MIT
+
 authors:
   - given-names: Jourdan
     family-names: Waas
-    email: waasj2019@my.fit.edu
     affiliation: Florida Institute of Technology
-    orcid: 'https://orcid.org/0009-0008-3084-3769'
-repository-code: 'https://github.com/jourdanwaas/planAGN'
-url: 'https://jourdanwaas.github.io/planAGN'
-abstract: This model computes and plots a set of diagnostics for planetary atmospheres exposed to AGN winds across a span of supermassive black hole (SMBH) masses and at various distances from the central SMBH.
+    orcid: https://orcid.org/0009-0008-3084-3769
+
+repository-code: https://github.com/jourdanwaas/planAGN
+url: https://jourdanwaas.github.io/planAGN
+
+abstract: >
+  planAGN is an open-source Python framework for modeling the effects of
+  active galactic nuclei (AGN) driven outflows on Earth-like planetary
+  atmospheres and habitability. The software computes atmospheric escape
+  and related diagnostics across a range of supermassive black hole masses
+  and galactocentric distances.
+
 keywords:
   - AGN
+  - Active Galactic Nuclei
+  - Exoplanets
   - Habitability
+  - Atmospheric Escape
   - Astrophysics
+  - Astrobiology
 
 preferred-citation:
   type: article
@@ -39,3 +55,4 @@ preferred-citation:
       family-names: Ambrifi
   year: '2026'
   doi: '10.3847/1538-4357/ae5e6f'
+  url: https://iopscience.iop.org/article/10.3847/1538-4357/ae5e6f
