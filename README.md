@@ -11,11 +11,11 @@ This model computes and plots a set of diagnostics for planetary atmospheres exp
 ```
 ├── LICENSE            ← Open-source license (MIT)
 ├── Makefile           ← Makefile
-├── README.md          ← The top-level README for developers using this project.
+├── README.md          ← The top-level README
 ├── pyproject.toml     ← Project configuration file with package metadata for planAGN
 ├── uv.lock            ← Lock file specifying dependencies for uv to use
 │
-├── docs/              ← Project documentation using mkdocs; see www.mkdocs.org for details
+├── docs/              ← Documentation
 │
 ├── notebooks/         ← Jupyter notebooks (coming soon).
 │
@@ -23,7 +23,7 @@ This model computes and plots a set of diagnostics for planetary atmospheres exp
 │   ├── figures/       ← Generated graphics and figures as .png files
 │   └── results/       ← Generated .tex file outputs
 │
-└── planAGN/  ← Source code for use in this project.
+└── planAGN/  ← Source code
     ├── __init__.py             ← Makes planAGN a Python module
     ├── main.py                 ← Stub for script code (currently can be used as a test)
     ├── model.py                ← Script to create plots across the natural range of black hole masses
