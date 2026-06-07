@@ -643,7 +643,7 @@ def sanitize_name(name):
     """Replace a version of a string suitable for a Windows filename."""
     return name.replace(' ', '_').replace('*', 'star')
 
-if __name__ == "__main__":
+def interactive():
     while True:
         name = input("\nEnter galaxy name (or 'q' to quit): ").strip()
         if name.lower() == "q":
@@ -654,3 +654,9 @@ if __name__ == "__main__":
         save = input("Save plots? (y/n): ").strip().lower() == "y"
 
         run_model(name, M_bh, save_plots=save)
+
+def non_interactive():
+    pass
+
+if __name__ == "__main__":
+    interactive()
