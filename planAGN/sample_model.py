@@ -8,6 +8,7 @@ from astropy.constants import c as c_const
 import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
+import yaml
 
 ## constants
 
@@ -655,8 +656,15 @@ def interactive():
 
         run_model(name, M_bh, save_plots=save)
 
-def non_interactive():
-    pass
+def non_interactive(filename):
+    with open(filename) as f:
+        configs = yaml.load(f, yaml.Loader)
+
+    for config in configs:
+        name = config['galaxy-name']
+        M_bh = config['BH-mass']
+        save = config['save-plots']
+        run_model(name, M_bh, save_plots=save)
 
 if __name__ == "__main__":
     interactive()

@@ -28,6 +28,7 @@ dependencies = [
     "pymdown-extensions>=10.20.1",
     "pytest",
     "python-dotenv",
+    "pyyaml>=6.0.3",
     "ruff",
     "typos>=1.42.3",
 ]
