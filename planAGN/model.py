@@ -22,15 +22,15 @@ import numpy as np
 
 ## define physical constants and standard conversions
 
-c = c_const.value                  # speed of light [m/s]
-G = G_const.value                  # gravitational constant [m^3 / (kg s^2)]
-kb = k_B.value                     # Boltzmann constant [J/K]
-mp = m_p.value                     # proton mass [kg]
-m_Earth = M_earth.value            # Earth mass [kg]
-SolarMass = M_sun.value            # solar mass [kg]
+c = c_const.value           # speed of light [m/s]
+G = G_const.value           # gravitational constant [m^3 / (kg s^2)]
+kb = k_B.value              # Boltzmann constant [J/K]
+mp = m_p.value              # proton mass [kg]
+m_Earth = M_earth.value     # Earth mass [kg]
+SolarMass = M_sun.value     # solar mass [kg]
 
-yr_in_secs = (365.256 * u.day).to(u.s).value  # sidereal year [s]
-pc_to_m = (1 * u.pc).to(u.m).value            # parsec to meter [m]
+yr_in_secs = 365.256 * u.day.to(u.s)    # sidereal year [s]
+pc_to_m = u.pc.to(u.m)                  # parsec to meter [m]
 
 ## planetary and molecular parameters
 
@@ -316,11 +316,13 @@ def mass_lost_momentum(x_pc: float) -> np.ndarray:
 
 # plot ozone depletion
 
+
 def plot_ozone_depletion(x_list):
     # energy-driven (index 0)
     plot_driven_ozone_depletion(x_list, driver_index=0, legend_title="Energy-Driven")
     # momentum-driven (index 1)
     plot_driven_ozone_depletion(x_list, driver_index=1, legend_title="Momentum-Driven")
+
 
 def plot_driven_ozone_depletion(x_list, driver_index, legend_title):
     # energy-driven (index 0)
@@ -344,10 +346,11 @@ def plot_driven_ozone_depletion(x_list, driver_index, legend_title):
 
 # plot timescale for 90% depletion
 
-def plot_deltaT_90pct(x_list):
 
+def plot_deltaT_90pct(x_list):
     plot_driven_deltaT_90pct(x_list, driver_index=0, legend_title="Energy-Driven")
     plot_driven_deltaT_90pct(x_list, driver_index=1, legend_title="Momentum-Driven")
+
 
 def plot_driven_deltaT_90pct(x_list, driver_index, legend_title):
     fig, ax = plt.subplots(figsize=(7, 5))
@@ -371,9 +374,11 @@ def plot_driven_deltaT_90pct(x_list, driver_index, legend_title):
 
 # plot heating and most probable velocities
 
+
 def plot_heating_and_velocities(x_list):
     plot_heating(x_list)
     plot_most_probable_velocities(x_list)
+
 
 def plot_heating(x_list):
     # energy-driven heating
@@ -382,11 +387,13 @@ def plot_heating(x_list):
     # momentum-driven heating
     plot_driven_heating(x_list, driver_index=1, legend_title="Momentum-Driven")
 
+
 def plot_most_probable_velocities(x_list):
     # energy-driven most probable velocities
     plot_driven_most_probable_velocities(x_list, driver_index=0, legend_title="Energy-Driven")
     # momentum-driven most probable velocities
     plot_driven_most_probable_velocities(x_list, driver_index=1, legend_title="Momentum-Driven")
+
 
 def plot_driven_heating(x_list, driver_index, legend_title):
     fig, ax = plt.subplots(figsize=(7, 5))
@@ -456,6 +463,7 @@ def plot_driven_most_probable_velocities(x_list, driver_index, legend_title):
 
 # plot mass loss
 
+
 def plot_mass_loss(x_list):
     plot_driven_mass_loss(x_list, driver=mass_lost_energy, legend_title="Energy-Driven")
     plot_driven_mass_loss(x_list, driver=mass_lost_momentum, legend_title="Momentum-Driven")
@@ -487,7 +495,7 @@ def plot_driven_mass_loss(x_list, driver, legend_title):
 # ---------------------------
 def main():
     """run all plotting functions"""
-    x_list = [100., 800., 5000., 10000., 15000.]
+    x_list = [100.0, 800.0, 5000.0, 10000.0, 15000.0]
     plot_ozone_depletion(x_list)
     plot_deltaT_90pct(x_list)
     plot_heating_and_velocities(x_list)

@@ -11,16 +11,15 @@ import numpy as np
 
 ## constants
 
-c = c_const.value                  # speed of light [m/s]
-G = G_const.value                  # gravitational constant [m^3 / (kg s^2)]
-kb = k_B.value                     # Boltzmann constant [J/K]
-#mp = m_p.value                    # proton mass [kg]
-m_Earth = M_earth.value            # Earth mass [kg]
-SolarMass = M_sun.value            # solar mass [kg]
-SolarLum = L_sun.value             # solar luminosity [W]
+c = c_const.value           # speed of light [m/s]
+G = G_const.value           # gravitational constant [m^3 / (kg s^2)]
+kb = k_B.value              # Boltzmann constant [J/K]
+m_Earth = M_earth.value     # Earth mass [kg]
+SolarMass = M_sun.value     # solar mass [kg]
+SolarLum = L_sun.value      # solar luminosity [W]
 
-yr_in_secs = (365.256 * u.day).to(u.s).value  # sidereal year [s]
-r_pc = (1 * u.pc).to(u.m).value               # parsec to meter [m]
+yr_in_secs = 365.256 * u.day.to(u.s)    # sidereal year [s]
+r_pc = u.pc.to(u.m)                     # parsec to meter [m]
 
 R_Earth = 6_371_000             # Earth radius (SI)
 R_Jupiter = 69_911_000          # Jupiter radius (SI)
@@ -28,11 +27,12 @@ Rp = [R_Earth, R_Jupiter]       # Earth and Jup. radii (SI)
 rho = 5.5e3                     # Earth density (SI)
 vfug = np.sqrt(2 * G * m_Earth / R_Earth)  # Escape velocity from the Earth (SI)
 ma = 5.1e18                     # Earth atmospheric mass (SI)
-# mm = 2.5e16                   # Mars atmospheric mass  (SI)
+##mm = 2.5e16                   # Mars atmospheric mass (SI)
 m_h2 = 2.02 * m_p.value         # molecular hydrogen mass (SI)
-# m_wat = 18.01 * m_p.value     # water molecule mass (SI)
-# m_o2 = 5.31e-26               # molecular oxygen mass (SI)
+##m_wat = 18.01 * m_p.value     # water molecule mass (SI)
+##m_o2 = 5.31e-26               # molecular oxygen mass (SI)
 m_n2 = 28.01 * m_p.value        # molecular nitrogen mass (SI)
+
 
 def run_model(name, M_bh, save_plots=True):
     """
@@ -77,15 +77,15 @@ def run_model(name, M_bh, save_plots=True):
         f.write("=" * 50 + "\n\n")
 
     # Running parameters
-    R_kpc = np.arange(0.1, 150)                   # range of radial distances to BH [kpc]
-    R_cm = (R_kpc * u.kpc).to(u.cm).value         # radius/distance to BH [cm]
+    R_kpc = np.arange(0.1, 150)    # range of radial distances to BH [kpc]
+    R_cm = R_kpc * u.kpc.to(u.cm)  # radius/distance to BH [cm]
 
     ## BH data
 
     M = M_bh * SolarMass            # mass of BH in kg
     Ledd = 3.3e4 * M_bh * SolarLum  # BH Eddington Luminosity (SI)
     eta = 0.1                       # radiative efficiency (adimensional)
-    # r_sch = 2*G*M/c**2            # Schwarzschild Radius (SI)
+    ##r_sch = 2*G*M/c**2            # Schwarzschild Radius (SI)
     t_salp = (M * eta * c**2) / ((1 - eta) * Ledd)  # Salpeter time (SI)
     t_salp_yr = t_salp / yr_in_secs  # Salpeter time (in years)
 
@@ -96,7 +96,7 @@ def run_model(name, M_bh, save_plots=True):
 
     # Planetary and atmospheric parameters
 
-    mpart = [m_n2, m_h2]            # list of molecular masses
+    mpart = [m_n2, m_h2]  # list of molecular masses
     T0 = 273.15  # assumed initial temperature for planetary atmosphere (SI)
     Cp = [
         1320,
@@ -106,8 +106,8 @@ def run_model(name, M_bh, save_plots=True):
 
     ## heating and most probable velocity
 
-    r0 = 100        # Minimum distance we consider from the central SMBH (pc)
-    r1 = 100000     # Maximum distance we consider from the central SMBH (pc)
+    r0 = 100     # Minimum distance we consider from the central SMBH (pc)
+    r1 = 100000  # Maximum distance we consider from the central SMBH (pc)
     x = np.arange(r0, r1, 10)
     kinpow = [
         0.05,
@@ -141,7 +141,7 @@ def run_model(name, M_bh, save_plots=True):
     plt.xscale("log")
     plt.yscale("log")
     plt.ylim(10**-1, 10**10)
-    plt.xlim(10**-1, 1.5*10**2)
+    plt.xlim(10**-1, 1.5 * 10**2)
     plt.yticks(fontsize=16)
     plt.xticks(fontsize=16)
     plt.tight_layout()
@@ -159,7 +159,7 @@ def run_model(name, M_bh, save_plots=True):
     if save_plots:
         fig.savefig(save_path, bbox_inches="tight")
 
-    # plt.show()
+    ##plt.show()
 
     def Vmp(x, k, j):
         """
@@ -354,7 +354,7 @@ def run_model(name, M_bh, save_plots=True):
     if save_plots:
         fig.savefig(save_path, bbox_inches="tight")
 
-    # plt.show()
+    ##plt.show()
 
     ## distances where the energy-limited hydrodynamic-like atm escape is significant
 
@@ -513,8 +513,8 @@ def run_model(name, M_bh, save_plots=True):
         R_kpc, D_md, "dodgerblue", linestyle="-", label=r"$D_{\mathrm{md}}$"
     )  # Ozone depletion, momentum-driven
 
-    #yvals = ax.get_yticks()
-    #ax.set_yticklabels(["{:,.1%}".format(y) for y in yvals], fontsize=16)
+    ##yvals = ax.get_yticks()
+    ##ax.set_yticklabels(["{:,.1%}".format(y) for y in yvals], fontsize=16)
 
     # set y-axis limits dynamically based on black hole mass
     if M_bh > 9.9e8:
@@ -541,7 +541,7 @@ def run_model(name, M_bh, save_plots=True):
     if save_plots:
         fig.savefig(save_path, bbox_inches="tight")
 
-    # plt.show()
+    ##plt.show()
 
     ## required time for 90% ozone depletion
 
@@ -565,18 +565,18 @@ def run_model(name, M_bh, save_plots=True):
         alpha=0.9,
         label=r"$R = 8~\mathrm{kpc}$",
     )
-    # plt.annotate('$R = 8kpc$',
-    #              (15, 0.0002),
-    #              textcoords="offset points",
-    #              xytext=(0,0),
-    #              fontsize=12,
-    #              rotation=90,
-    #              ha='right')
-    # plt.axhline(4, color='gray', linestyle='--', linewidth=1)
-    # plt.annotate(r'$\Delta t = 4$ yr',
-    # xy=(0.1, 4), xycoords='data',  # Adjust x position as needed
-    # xytext=(10, 5), textcoords='offset points',
-    # fontsize=12, color='black')
+    ##plt.annotate('$R = 8kpc$',
+    ##             (15, 0.0002),
+    ##             textcoords="offset points",
+    ##             xytext=(0,0),
+    ##             fontsize=12,
+    ##             rotation=90,
+    ##             ha='right')
+    ##plt.axhline(4, color='gray', linestyle='--', linewidth=1)
+    ##plt.annotate(r'$\Delta t = 4$ yr',
+    ##             xy=(0.1, 4), xycoords='data',  # Adjust x position as needed
+    ##             xytext=(10, 5), textcoords='offset points',
+    ##             fontsize=12, color='black')
     plt.xscale("log")
     plt.yscale("log")
     plt.ylim(1e-3, 1e6)
@@ -599,7 +599,7 @@ def run_model(name, M_bh, save_plots=True):
     if save_plots:
         fig.savefig(save_path, bbox_inches="tight")
 
-    # plt.show()
+    ##plt.show()
 
     ## distances where major ozone depletion (90% loss) due to NO formation is significant
 
@@ -641,7 +641,8 @@ def find_intersection_radius_ozone(x, y, value):
 
 def sanitize_name(name):
     """Replace a version of a string suitable for a Windows filename."""
-    return name.replace(' ', '_').replace('*', 'star')
+    return name.replace(" ", "_").replace("*", "star")
+
 
 if __name__ == "__main__":
     while True:
