@@ -1,6 +1,7 @@
 ## import stuff
 
 from pathlib import Path
+import sys
 
 from astropy.constants import G as G_const
 from astropy.constants import L_sun, M_earth, M_sun, k_B, m_p
@@ -8,6 +9,7 @@ from astropy.constants import c as c_const
 import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
+import yaml
 
 ## constants
 
@@ -644,7 +646,7 @@ def sanitize_name(name):
     return name.replace(" ", "_").replace("*", "star")
 
 
-if __name__ == "__main__":
+def interactive():
     while True:
         name = input("\nEnter galaxy name (or 'q' to quit): ").strip()
         if name.lower() == "q":
@@ -655,3 +657,34 @@ if __name__ == "__main__":
         save = input("Save plots? (y/n): ").strip().lower() == "y"
 
         run_model(name, M_bh, save_plots=save)
+
+
+def non_interactive(filename):
+    with open(filename) as f:
+        configs = yaml.load(f, yaml.Loader)
+
+    for config in configs:
+        name = config["galaxy-name"]
+        M_bh = config["BH-mass"]
+        save = config["save-plots"]
+        print("Processing", name)
+        run_model(name, M_bh, save_plots=save)
+
+
+def main():
+    """CLI entry point"""
+    argc = len(sys.argv)
+    # If they didn't provide any command-line arguments, assume we're running
+    # interactively. If they provided 1, assume that's the filename,
+    # otherwise print the usage and exit with an error.
+    if argc == 1:
+        interactive()
+    elif argc == 2:
+        non_interactive(sys.argv[1])
+    else:
+        print(f"Usage: {sys.argv[0]} [filename]")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
