@@ -1,0 +1,6 @@
+- galaxy-name: 3C 390.3
+  BH-mass: 2.8e+8           # In units of solar mass
+  save-plots: true
+- galaxy-name: Milky way
+  BH-mass: 4.297e+6
+  save-plots: false
