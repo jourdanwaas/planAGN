@@ -1,6 +1,7 @@
 ## import stuff
 
 from pathlib import Path
+import sys
 
 from astropy.constants import G as G_const
 from astropy.constants import L_sun, M_earth, M_sun, k_B, m_p
@@ -656,15 +657,30 @@ def interactive():
 
         run_model(name, M_bh, save_plots=save)
 
+
 def non_interactive(filename):
     with open(filename) as f:
         configs = yaml.load(f, yaml.Loader)
 
     for config in configs:
-        name = config['galaxy-name']
-        M_bh = config['BH-mass']
-        save = config['save-plots']
+        name = config["galaxy-name"]
+        M_bh = config["BH-mass"]
+        save = config["save-plots"]
+        print("Processing", name)
         run_model(name, M_bh, save_plots=save)
 
+
+def main():
+    """CLI entry point"""
+    argc = len(sys.argv)
+    if argc == 1:
+        interactive()
+    elif argc == 2:
+        non_interactive(sys.argv[1])
+    else:
+        print(f"Usage: {sys.argv[0]} [filename]")
+        sys.exit(1)
+
+
 if __name__ == "__main__":
-    interactive()
+    main()
