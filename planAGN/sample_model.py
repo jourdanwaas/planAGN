@@ -673,6 +673,9 @@ def non_interactive(filename):
 def main():
     """CLI entry point"""
     argc = len(sys.argv)
+    # If they didn't provide any command-line arguments, assume we're running
+    # interactively. If they provided 1, assume that's the filename,
+    # otherwise print the usage and exit with an error.
     if argc == 1:
         interactive()
     elif argc == 2:
