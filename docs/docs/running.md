@@ -38,7 +38,7 @@ uv run planAGN/sample_model.py
 
 The script will then prompt you for:
 
-```sh
+```text
 Enter galaxy name (or 'q' to quit):
 Enter black hole mass [M_sun]:
 Save plots? (y/n):
@@ -62,7 +62,7 @@ Save Option
 
 #### Single Galaxy Example
 
-```sh
+```text
 Enter galaxy name (or 'q' to quit): 3C 390.3
 Enter black hole mass [M_sun]: 2.8e8
 Save plots? (y/n): y
