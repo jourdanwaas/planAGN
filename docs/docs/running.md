@@ -4,10 +4,10 @@ Running the Models
 There are two main scripts in this project:
 
 1. `model.py` - runs the model automatically across a range of SMBH masses
-2. `sample_model.py` - runs the model interactively for user-specified input values
+2. `sample_model.py` - runs the model for user-specified input values
 
 !!! tip
-    Use the interactive model for quick testing.
+    Use `sample_model.py` interactively for quick testing.
 
 ---
 
@@ -72,3 +72,24 @@ This script will generate and locally save results for the radio galaxy 3C 390.3
 
 !!! note
     The code will produce a compatible file name for the object, therefore inputting a space into the interactive prompt is acceptable.
+
+
+### Non-interactive use
+The `sample_model.py` can also be used non-interactively, by providing a YAML file filled with the galaxy information. As an example, we can provide the `galaxy-name`, `BH-mass`, and `save-plots` as the input parameters in a saved file:
+
+```yaml
+- galaxy-name: 3C 390.3
+  BH-mass: 2.8e+8           # In units of solar mass
+  save-plots: true
+- galaxy-name: Milky way
+  BH-mass: 4.297e+6
+  save-plots: false
+```
+
+If the file is saved as `parameters.yml`, the script can be run as
+
+```sh
+uv run planAGN/sample_model.py parameters.yml
+```
+
+where the argument after `sample_model.py` should point to the file being used.
